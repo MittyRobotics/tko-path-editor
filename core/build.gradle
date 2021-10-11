@@ -1,6 +1,7 @@
-apply plugin: "java"
-
-sourceCompatibility = 1.7
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+eclipse.project.name = appName + '-core'
 
-sourceSets.main.java.srcDirs = [ "src/" ]
+dependencies {
+	api "com.badlogicgames.gdx:gdx:$gdxVersion"
+	api "me.rohanbansal.ricochet:ricochet:1.9.8-SNAPSHOT"
+}

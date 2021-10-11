@@ -1,8 +1,0 @@
-{
-  "classPath": [
-    "desktop-1.0.jar"
-  ],
-  "mainClass": "com.amhsrobotics.pathgeneration.desktop.DesktopLauncher",
-  "vmArgs": [
-  ]
-}
