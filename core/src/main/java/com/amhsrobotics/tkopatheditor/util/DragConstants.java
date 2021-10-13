@@ -6,4 +6,6 @@ public class DragConstants {
 
     public static boolean draggingSpline = false;
     public static SplineHandle draggingHandle = null;
+
+    public static SplineHandle handleSelected = null;
 }

@@ -2,6 +2,9 @@ package com.amhsrobotics.tkopatheditor.parametrics;
 
 import com.amhsrobotics.tkopatheditor.Constants;
 import com.amhsrobotics.tkopatheditor.util.CameraManager;
+import com.amhsrobotics.tkopatheditor.util.DragConstants;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
@@ -23,13 +26,25 @@ public class SplineHandle {
 
         circle = new Circle((float) point.getX(), (float) point.getY(), 10);
 
-        if(isHovering()) {
-            renderer.setColor(Constants.HANDLE_HOVER_COLOR);
+        if(DragConstants.handleSelected == this) {
+            renderer.setColor(Constants.HANDLE_SELECTED_COLOR);
         } else {
-            renderer.setColor(Constants.HANDLE_IDLE_COLOR);
+            if(isHovering()) {
+                renderer.setColor(Constants.HANDLE_HOVER_COLOR);
+            } else {
+                renderer.setColor(Constants.HANDLE_IDLE_COLOR);
+            }
         }
 
+
         renderer.circle(circle.x, circle.y, circle.radius);
+
+        if(DragConstants.handleSelected == this) {
+            renderer.setColor(Constants.HANDLE_MODIFICATION_COLOR);
+            renderer.circle(circle.x, circle.y, circle.radius * 2 + 3);
+        }
+
+
     }
 
     public boolean isHovering() {

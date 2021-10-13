@@ -28,6 +28,13 @@ public class InputCore implements InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
+
+        if(DragConstants.handleSelected != null) {
+            if(keycode == Input.Keys.ESCAPE) {
+                DragConstants.handleSelected = null;
+            }
+        }
+
         return false;
     }
 
@@ -48,9 +55,20 @@ public class InputCore implements InputProcessor {
             for(SplineHandle h : SplineManager.getInstance().getAllHandles()) {
                 if(h.isHovering()) {
                     DragConstants.draggingSpline = true;
+                    DragConstants.handleSelected = h;
                     DragConstants.draggingHandle = h;
                 }
             }
+        }
+
+        if(DragConstants.handleSelected != null) {
+            boolean nonePressed = true;
+            for(SplineHandle h : SplineManager.getInstance().getAllHandles()) {
+                if(h.isHovering()) {
+                    nonePressed = false;
+                }
+            }
+            if(nonePressed) DragConstants.handleSelected = null;
         }
 
         return false;
