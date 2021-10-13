@@ -1,6 +1,9 @@
 package com.amhsrobotics.tkopatheditor.display;
 
 import com.amhsrobotics.tkopatheditor.blueprints.ToolButton;
+import com.amhsrobotics.tkopatheditor.parametrics.SplineManager;
+import com.amhsrobotics.tkopatheditor.parametrics.SplineType;
+import com.amhsrobotics.tkopatheditor.parametrics.SplineWrapper;
 import com.amhsrobotics.tkopatheditor.util.UITools;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -42,7 +45,9 @@ public class CubicSplineTool implements ToolButton {
 
     @Override
     public void onClick() {
-
+        SplineManager.getInstance().registerSpline(
+                new SplineWrapper(SplineType.CUBIC_HERMITE)
+        );
     }
 
 
