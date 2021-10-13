@@ -35,8 +35,10 @@ public class SnapGrid {
         }
     }
 
-    public static void calculateSnap(Vector2 position) {
-        position.x = Math.round(position.x / GRID_SIZE) * GRID_SIZE;
-        position.y = Math.round(position.y / GRID_SIZE) * GRID_SIZE;
+    public static Vector2 calculateSnap(Vector2 position) {
+        return new Vector2(
+                Math.round(position.x / GRID_SIZE) * GRID_SIZE + GRID_STARTING_GAP,
+                Math.round(position.y / GRID_SIZE) * GRID_SIZE + GRID_STARTING_GAP
+        );
     }
 }

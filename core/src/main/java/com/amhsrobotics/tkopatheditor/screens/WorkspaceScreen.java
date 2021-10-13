@@ -3,6 +3,7 @@ package com.amhsrobotics.tkopatheditor.screens;
 import com.amhsrobotics.tkopatheditor.display.Overlay;
 import com.amhsrobotics.tkopatheditor.parametrics.SplineManager;
 import com.amhsrobotics.tkopatheditor.util.CameraManager;
+import com.amhsrobotics.tkopatheditor.util.DragConstants;
 import com.amhsrobotics.tkopatheditor.util.InputCore;
 import com.amhsrobotics.tkopatheditor.util.SnapGrid;
 import com.badlogic.gdx.Gdx;

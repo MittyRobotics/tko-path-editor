@@ -36,7 +36,7 @@ public class SplineWrapper {
         waypoints.addAll(Arrays.asList(points));
 
         for(Transform wp : waypoints) {
-            handles.add(new SplineHandle(wp));
+            handles.add(new SplineHandle(wp, this));
         }
 
         color = Constants.SPLINE_DEFAULT_COLOR;
@@ -81,6 +81,10 @@ public class SplineWrapper {
         for(SplineHandle handle : handles) {
             handle.render(renderer);
         }
+    }
+
+    public ArrayList<SplineHandle> getHandles() {
+        return handles;
     }
 
     public int getID() {

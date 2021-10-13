@@ -1,6 +1,8 @@
 package com.amhsrobotics.tkopatheditor.util;
 
 import com.amhsrobotics.tkopatheditor.Constants;
+import com.amhsrobotics.tkopatheditor.parametrics.SplineHandle;
+import com.amhsrobotics.tkopatheditor.parametrics.SplineManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
@@ -41,22 +43,48 @@ public class InputCore implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+
+        if(!DragConstants.draggingSpline) {
+            for(SplineHandle h : SplineManager.getInstance().getAllHandles()) {
+                if(h.isHovering()) {
+                    DragConstants.draggingSpline = true;
+                    DragConstants.draggingHandle = h;
+                }
+            }
+        }
+
         return false;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+
+        if(DragConstants.draggingSpline) {
+            DragConstants.draggingSpline = false;
+            DragConstants.draggingHandle = null;
+        }
+
         return false;
     }
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-            float x = Gdx.input.getDeltaX() * CameraManager.getInstance().getWorldCamera().getCamera().zoom;
-            float y = Gdx.input.getDeltaY() * CameraManager.getInstance().getWorldCamera().getCamera().zoom;
+        if(DragConstants.draggingSpline) {
+            Vector2 mousePosition = CameraManager.mouseScreenToWorld(CameraManager.getInstance().getWorldCamera());
+            if(Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
+                DragConstants.draggingHandle.setPosition(SnapGrid.calculateSnap(mousePosition));
+            } else {
+                DragConstants.draggingHandle.setPosition(mousePosition);
+            }
+        } else {
+            if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+                float x = Gdx.input.getDeltaX() * CameraManager.getInstance().getWorldCamera().getCamera().zoom;
+                float y = Gdx.input.getDeltaY() * CameraManager.getInstance().getWorldCamera().getCamera().zoom;
 
-            CameraManager.getInstance().getWorldCamera().getCamera().translate(-x * Constants.PAN_AMPLIFIER, y * Constants.PAN_AMPLIFIER);
+                CameraManager.getInstance().getWorldCamera().getCamera().translate(-x * Constants.PAN_AMPLIFIER, y * Constants.PAN_AMPLIFIER);
+            }
         }
+
 
         return true;
     }
