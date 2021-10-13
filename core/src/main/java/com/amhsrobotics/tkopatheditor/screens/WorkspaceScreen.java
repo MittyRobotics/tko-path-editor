@@ -39,6 +39,7 @@ public class WorkspaceScreen implements Screen {
 		CameraManager.getInstance().update();
 
 		SnapGrid.renderGrid(CameraManager.getInstance().getWorldCamera());
+		SplineManager.getInstance().render(delta);
 
 		Overlay.getInstance().update(delta);
 	}

@@ -17,7 +17,6 @@ public class Overlay implements Disposable {
     private static Overlay instance;
     private ModifiedStage stage;
     private SpriteBatch overlayBatch;
-    private ModifiedShapeRenderer sRenderer;
 
     private TextureAtlas atlas;
     private Skin skin;
@@ -32,7 +31,6 @@ public class Overlay implements Disposable {
     public void init() {
 
         overlayBatch = new SpriteBatch();
-        sRenderer = new ModifiedShapeRenderer();
         stage = new ModifiedStage(CameraManager.getInstance().getHUDViewport(), overlayBatch);
 
         atlas = new TextureAtlas(Gdx.files.internal(Constants.UI_SKIN));

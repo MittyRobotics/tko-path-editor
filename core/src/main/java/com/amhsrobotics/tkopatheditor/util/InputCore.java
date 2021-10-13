@@ -51,7 +51,7 @@ public class InputCore implements InputProcessor {
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        if(Gdx.input.isButtonPressed(Input.Buttons.MIDDLE)) {
+        if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
             float x = Gdx.input.getDeltaX() * CameraManager.getInstance().getWorldCamera().getCamera().zoom;
             float y = Gdx.input.getDeltaY() * CameraManager.getInstance().getWorldCamera().getCamera().zoom;
 

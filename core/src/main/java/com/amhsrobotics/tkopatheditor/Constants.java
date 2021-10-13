@@ -26,5 +26,9 @@ public class Constants {
     public static final String FONT_LARGE = "font/large.fnt";
 
     public static final double TIME_STEP = 0.0001;
+    public static final double LINE_WIDTH = 2;
+    public static final Color SPLINE_DEFAULT_COLOR = Color.valueOf("#C6F9F8FF");
+    public static final Color HANDLE_IDLE_COLOR = Color.valueOf("#E396C2FF");
+    public static final Color HANDLE_HOVER_COLOR = Color.valueOf("#F0B1D5FF");
 
 }
