@@ -8,4 +8,7 @@ public class DragConstants {
     public static SplineHandle draggingHandle = null;
 
     public static SplineHandle handleSelected = null;
+
+    public static boolean draggingRotationHandle = false;
+    public static boolean draggingFromLeft = false;
 }

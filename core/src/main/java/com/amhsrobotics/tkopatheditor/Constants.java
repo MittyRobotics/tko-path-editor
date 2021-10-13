@@ -29,9 +29,12 @@ public class Constants {
     public static final double LINE_WIDTH = 2;
     public static final Color SPLINE_DEFAULT_COLOR = Color.valueOf("#C6F9F8FF");
 
-    public static final Color HANDLE_MODIFICATION_COLOR = Color.valueOf("#F9F2F644");
+    public static final Color HANDLE_ROTATION_COLOR = Color.valueOf("#F9F2F633");
     public static final Color HANDLE_IDLE_COLOR = Color.valueOf("#E396C2FF");
     public static final Color HANDLE_HOVER_COLOR = Color.valueOf("#F0B1D5FF");
     public static final Color HANDLE_SELECTED_COLOR = Color.valueOf("#EC5DAFFF");
+
+    public static final int HANDLE_RADIUS = 10;
+    public static final int HANDLE_ROTATION_RADIUS = HANDLE_RADIUS * 2 + 3;
 
 }

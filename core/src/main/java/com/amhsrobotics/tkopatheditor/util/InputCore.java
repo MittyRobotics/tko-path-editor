@@ -10,6 +10,8 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
+import static com.github.mittyrobotics.core.math.units.ConversionsKt.degrees;
+
 
 public class InputCore implements InputProcessor {
 
@@ -32,6 +34,7 @@ public class InputCore implements InputProcessor {
         if(DragConstants.handleSelected != null) {
             if(keycode == Input.Keys.ESCAPE) {
                 DragConstants.handleSelected = null;
+                DragConstants.draggingRotationHandle = false;
             }
         }
 
@@ -51,9 +54,18 @@ public class InputCore implements InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
+        // if not dragging a spline
         if(!DragConstants.draggingSpline && button == Input.Buttons.LEFT) {
             for(SplineHandle h : SplineManager.getInstance().getAllHandles()) {
-                if(h.isHovering()) {
+                // set rotating handle to true since rotation circle is hovered
+                if(h.isHoveringRotationCircle()) {
+                    DragConstants.draggingRotationHandle = true;
+
+                    Vector2 mousePosition = CameraManager.mouseScreenToWorld(CameraManager.getInstance().getWorldCamera());
+                    DragConstants.draggingFromLeft = mousePosition.x < DragConstants.handleSelected.getPoint().getX();
+
+                    // set dragging/selected handle to true since inner circle hovered
+                } else if(h.isHoveringHandle()) {
                     DragConstants.draggingSpline = true;
                     DragConstants.handleSelected = h;
                     DragConstants.draggingHandle = h;
@@ -61,14 +73,18 @@ public class InputCore implements InputProcessor {
             }
         }
 
+        // set selection to none if clicking on empty space
         if(DragConstants.handleSelected != null) {
             boolean nonePressed = true;
             for(SplineHandle h : SplineManager.getInstance().getAllHandles()) {
-                if(h.isHovering()) {
+                if(h.isHoveringHandle() || h.isHoveringRotationCircle()) {
                     nonePressed = false;
                 }
             }
-            if(nonePressed) DragConstants.handleSelected = null;
+            if(nonePressed) {
+                DragConstants.handleSelected = null;
+                DragConstants.draggingRotationHandle = false;
+            }
         }
 
         return false;
@@ -82,6 +98,12 @@ public class InputCore implements InputProcessor {
             DragConstants.draggingHandle = null;
         }
 
+        if(DragConstants.handleSelected != null) {
+            if(DragConstants.draggingRotationHandle) {
+                DragConstants.draggingRotationHandle = false;
+            }
+        }
+
         return false;
     }
 
@@ -89,11 +111,27 @@ public class InputCore implements InputProcessor {
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         if(DragConstants.draggingSpline) {
             Vector2 mousePosition = CameraManager.mouseScreenToWorld(CameraManager.getInstance().getWorldCamera());
-            if(Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
+            if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
                 DragConstants.draggingHandle.setPosition(SnapGrid.calculateSnap(mousePosition));
             } else {
                 DragConstants.draggingHandle.setPosition(mousePosition);
             }
+        } else if(DragConstants.draggingRotationHandle && DragConstants.handleSelected != null) {
+
+            Vector2 mousePosition = CameraManager.mouseScreenToWorld(CameraManager.getInstance().getWorldCamera());
+            double angle = Math.atan2((mousePosition.x - DragConstants.handleSelected.getPoint().getX()), (mousePosition.y - DragConstants.handleSelected.getPoint().getY()));
+
+            if(DragConstants.draggingFromLeft) {
+                angle = -angle - degrees(90);
+            } else {
+                angle = -angle + degrees(90);
+            }
+
+            if(Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
+                angle = Math.toRadians(45) * (float) Math.round(angle / Math.toRadians(45));
+            }
+//            System.out.println(Math.toDegrees(angle));
+            DragConstants.handleSelected.setRotation(Math.toDegrees(angle));
         } else {
             if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
                 float x = Gdx.input.getDeltaX() * CameraManager.getInstance().getWorldCamera().getCamera().zoom;
