@@ -1,6 +1,7 @@
 package com.amhsrobotics.tkopatheditor.screens;
 
 import com.amhsrobotics.tkopatheditor.display.Overlay;
+import com.amhsrobotics.tkopatheditor.parametrics.SplineManager;
 import com.amhsrobotics.tkopatheditor.util.CameraManager;
 import com.amhsrobotics.tkopatheditor.util.InputCore;
 import com.amhsrobotics.tkopatheditor.util.SnapGrid;
@@ -8,6 +9,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.github.mittyrobotics.core.math.geometry.Rotation;
+import com.github.mittyrobotics.core.math.geometry.Transform;
+import com.github.mittyrobotics.core.math.geometry.Vector2D;
+import com.github.mittyrobotics.core.math.spline.Path;
 
 import static com.amhsrobotics.tkopatheditor.Constants.BACKGROUND_COLOR;
 
@@ -18,6 +23,7 @@ public class WorkspaceScreen implements Screen {
 		CameraManager.getInstance().init();
 		InputCore.getInstance().init();
 		Overlay.getInstance().init();
+		SplineManager.getInstance().init();
 
 		Gdx.input.setInputProcessor(new InputMultiplexer(
 				Overlay.getInstance().getStage(),

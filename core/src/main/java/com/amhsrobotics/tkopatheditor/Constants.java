@@ -25,4 +25,6 @@ public class Constants {
     public static final String FONT_SMALL = "font/small.fnt";
     public static final String FONT_LARGE = "font/large.fnt";
 
+    public static final double TIME_STEP = 0.0001;
+
 }
