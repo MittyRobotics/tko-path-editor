@@ -51,7 +51,7 @@ public class InputCore implements InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
-        if(!DragConstants.draggingSpline) {
+        if(!DragConstants.draggingSpline && button == Input.Buttons.LEFT) {
             for(SplineHandle h : SplineManager.getInstance().getAllHandles()) {
                 if(h.isHovering()) {
                     DragConstants.draggingSpline = true;
