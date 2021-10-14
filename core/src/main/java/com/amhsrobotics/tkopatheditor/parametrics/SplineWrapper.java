@@ -1,8 +1,11 @@
 package com.amhsrobotics.tkopatheditor.parametrics;
 
 import com.amhsrobotics.tkopatheditor.Constants;
+import com.amhsrobotics.tkopatheditor.util.CameraManager;
 import com.amhsrobotics.tkopatheditor.util.Tuple;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Vector2;
 import com.github.mittyrobotics.core.math.geometry.Rotation;
 import com.github.mittyrobotics.core.math.geometry.Transform;
 import com.github.mittyrobotics.core.math.geometry.Vector2D;
@@ -46,11 +49,12 @@ public class SplineWrapper {
     }
 
     public SplineWrapper(SplineType type) {
+
         this(
                 new Transform[] {
-                        new Transform(new Vector2D(100, 100), new Rotation(0)),
-                        new Transform(new Vector2D(200, 200), new Rotation(0)),
-                        new Transform(new Vector2D(300, 200), new Rotation(0)),
+                        new Transform(new Vector2D(CameraManager.getWorldFocusPoint().x - 100, CameraManager.getWorldFocusPoint().y - 100), new Rotation(0)),
+                        new Transform(new Vector2D(CameraManager.getWorldFocusPoint().x, CameraManager.getWorldFocusPoint().y), new Rotation(0)),
+                        new Transform(new Vector2D(CameraManager.getWorldFocusPoint().x + 100, CameraManager.getWorldFocusPoint().y), new Rotation(0)),
                 }, type
         );
     }

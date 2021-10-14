@@ -59,10 +59,13 @@ public class InputCore implements InputProcessor {
             for(SplineHandle h : SplineManager.getInstance().getAllHandles()) {
                 // set rotating handle to true since rotation circle is hovered
                 if(h.isHoveringRotationCircle()) {
-                    DragConstants.draggingRotationHandle = true;
+                    if(DragConstants.handleSelected != null) {
+                        DragConstants.draggingRotationHandle = true;
 
-                    Vector2 mousePosition = CameraManager.mouseScreenToWorld(CameraManager.getInstance().getWorldCamera());
-                    DragConstants.draggingFromLeft = mousePosition.x < DragConstants.handleSelected.getPoint().getX();
+                        Vector2 mousePosition = CameraManager.mouseScreenToWorld();
+                        DragConstants.draggingFromLeft = mousePosition.x < DragConstants.handleSelected.getPoint().getX();
+
+                    }
 
                     // set dragging/selected handle to true since inner circle hovered
                 } else if(h.isHoveringHandle()) {
@@ -110,7 +113,7 @@ public class InputCore implements InputProcessor {
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         if(DragConstants.draggingSpline) {
-            Vector2 mousePosition = CameraManager.mouseScreenToWorld(CameraManager.getInstance().getWorldCamera());
+            Vector2 mousePosition = CameraManager.mouseScreenToWorld();
             if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
                 DragConstants.draggingHandle.setPosition(SnapGrid.calculateSnap(mousePosition));
             } else {
@@ -118,8 +121,9 @@ public class InputCore implements InputProcessor {
             }
         } else if(DragConstants.draggingRotationHandle && DragConstants.handleSelected != null) {
 
-            Vector2 mousePosition = CameraManager.mouseScreenToWorld(CameraManager.getInstance().getWorldCamera());
+            Vector2 mousePosition = CameraManager.mouseScreenToWorld();
             double angle = Math.atan2((mousePosition.x - DragConstants.handleSelected.getPoint().getX()), (mousePosition.y - DragConstants.handleSelected.getPoint().getY()));
+//            double dst = new Vector2((float) DragConstants.handleSelected.getPoint().getX(), (float) DragConstants.handleSelected.getPoint().getY()).dst(new Vector2(mousePosition.x, mousePosition.y));
 
             if(DragConstants.draggingFromLeft) {
                 angle = -angle - degrees(90);
@@ -130,7 +134,7 @@ public class InputCore implements InputProcessor {
             if(Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
                 angle = Math.toRadians(45) * (float) Math.round(angle / Math.toRadians(45));
             }
-//            System.out.println(Math.toDegrees(angle));
+
             DragConstants.handleSelected.setRotation(Math.toDegrees(angle));
         } else {
             if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
@@ -153,12 +157,12 @@ public class InputCore implements InputProcessor {
     @Override
     public boolean scrolled(float amountX, float amountY) {
 
-        Vector2 worldCoordsBefore = CameraManager.mouseScreenToWorld(CameraManager.getInstance().getWorldCamera());
+        Vector2 worldCoordsBefore = CameraManager.mouseScreenToWorld();
 
         CameraManager.getInstance().getWorldCamera().getCamera().zoom += amountY * CameraManager.getInstance().getWorldCamera().getCamera().zoom * Constants.ZOOM_AMPLIFIER;
         CameraManager.getInstance().getWorldCamera().update();
 
-        Vector2 worldCoordsAfter = CameraManager.mouseScreenToWorld(CameraManager.getInstance().getWorldCamera());
+        Vector2 worldCoordsAfter = CameraManager.mouseScreenToWorld();
 
         Vector3 diff = new Vector3(worldCoordsAfter, 0).sub(new Vector3(worldCoordsBefore, 0));
 

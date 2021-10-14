@@ -61,11 +61,11 @@ public class SplineHandle {
     }
 
     public boolean isHoveringHandle() {
-        return circle.contains(CameraManager.mouseScreenToWorld(CameraManager.getInstance().getWorldCamera()));
+        return circle.contains(CameraManager.mouseScreenToWorld());
     }
 
     public boolean isHoveringRotationCircle() {
-        return (rotationCircle.contains(CameraManager.mouseScreenToWorld(CameraManager.getInstance().getWorldCamera())) && !isHoveringHandle());
+        return (rotationCircle.contains(CameraManager.mouseScreenToWorld()) && !isHoveringHandle());
     }
 
     public void setPosition(Vector2 position) {

@@ -1,4 +1,4 @@
-package com.amhsrobotics.tkopatheditor.display;
+package com.amhsrobotics.tkopatheditor.display.tools;
 
 import com.amhsrobotics.tkopatheditor.blueprints.ToolButton;
 import com.amhsrobotics.tkopatheditor.util.UITools;
@@ -8,33 +8,33 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextTooltip;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
-public class ExportTool implements ToolButton {
+public class HelpTool implements ToolButton {
 
-    private static ExportTool instance;
+    private static HelpTool instance;
 
     TextButton button;
 
-    public static ExportTool getInstance() {
+    public static HelpTool getInstance() {
         if(instance == null) {
-            instance = new ExportTool();
+            instance = new HelpTool();
         }
         return instance;
     }
 
     @Override
     public TextButton create() {
-        button = new TextButton("Export", UITools.textButtonStyle);
-        button.setPosition(Gdx.graphics.getWidth() - 100, Gdx.graphics.getHeight() - 60);
+        button = new TextButton("Help", UITools.textButtonStyle);
+        button.setPosition(Gdx.graphics.getWidth() - 280, Gdx.graphics.getHeight() - 60);
         button.addListener(
                 new ChangeListener() {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {
-                        ExportTool.getInstance().onClick();
+                        HelpTool.getInstance().onClick();
                     }
                 }
         );
         button.addListener(
-                new TextTooltip("Export Path" ,UITools.tooltipStyle)
+                new TextTooltip("View a tutorial, keybinds" ,UITools.tooltipStyle)
         );
 
         return button;

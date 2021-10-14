@@ -1,4 +1,4 @@
-package com.amhsrobotics.tkopatheditor.display;
+package com.amhsrobotics.tkopatheditor.display.tools;
 
 import com.amhsrobotics.tkopatheditor.blueprints.ToolButton;
 import com.amhsrobotics.tkopatheditor.parametrics.SplineManager;

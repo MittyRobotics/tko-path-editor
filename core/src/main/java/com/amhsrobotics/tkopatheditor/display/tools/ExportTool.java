@@ -1,4 +1,4 @@
-package com.amhsrobotics.tkopatheditor.display;
+package com.amhsrobotics.tkopatheditor.display.tools;
 
 import com.amhsrobotics.tkopatheditor.blueprints.ToolButton;
 import com.amhsrobotics.tkopatheditor.util.UITools;
@@ -8,33 +8,33 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextTooltip;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
-public class WaypointTool implements ToolButton {
+public class ExportTool implements ToolButton {
 
-    private static WaypointTool instance;
+    private static ExportTool instance;
 
     TextButton button;
 
-    public static WaypointTool getInstance() {
+    public static ExportTool getInstance() {
         if(instance == null) {
-            instance = new WaypointTool();
+            instance = new ExportTool();
         }
         return instance;
     }
 
     @Override
     public TextButton create() {
-        button = new TextButton("W", UITools.textButtonStyle);
-        button.setPosition(480, Gdx.graphics.getHeight() - 60);
+        button = new TextButton("Export", UITools.textButtonStyle);
+        button.setPosition(Gdx.graphics.getWidth() - 100, Gdx.graphics.getHeight() - 60);
         button.addListener(
                 new ChangeListener() {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {
-                        WaypointTool.getInstance().onClick();
+                        ExportTool.getInstance().onClick();
                     }
                 }
         );
         button.addListener(
-                new TextTooltip("Create a waypoint on the field." ,UITools.tooltipStyle)
+                new TextTooltip("Export Path" ,UITools.tooltipStyle)
         );
 
         return button;

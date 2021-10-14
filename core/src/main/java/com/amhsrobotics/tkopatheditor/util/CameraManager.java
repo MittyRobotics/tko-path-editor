@@ -57,16 +57,22 @@ public class CameraManager {
         return HUDViewport;
     }
 
-    public static Vector2 mouseScreenToWorld(CameraController cam) {
+    public static Vector2 mouseScreenToWorld() {
         Vector3 vec = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-        cam.getCamera().unproject(vec);
+        getInstance().getWorldCamera().getCamera().unproject(vec);
         return new Vector2(vec.x, vec.y);
     }
 
-    public static Vector2 vectorScreenToWorld(CameraController cam, Vector2 vector) {
+    public static Vector2 vectorScreenToWorld(Vector2 vector) {
         Vector3 vec = new Vector3(vector.x, vector.y, 0);
-        cam.getCamera().unproject(vec);
+        getInstance().getWorldCamera().getCamera().unproject(vec);
         return new Vector2(vec.x, vec.y);
+    }
+
+    public static Vector2 getWorldFocusPoint() {
+        return vectorScreenToWorld(
+                new Vector2((float) Gdx.graphics.getWidth() / 2, (float) Gdx.graphics.getHeight() / 2)
+        );
     }
 
 }

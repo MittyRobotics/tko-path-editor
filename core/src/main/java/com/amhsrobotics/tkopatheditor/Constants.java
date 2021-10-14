@@ -22,6 +22,7 @@ public class Constants {
     public static final int PANEL_HEIGHT = 65;
 
     public static final String UI_SKIN = "skin/ui-white.atlas";
+    public static final String UI_SKIN_ALT = "skin/ui-gray.atlas";
     public static final String FONT_SMALL = "font/small.fnt";
     public static final String FONT_LARGE = "font/large.fnt";
 
