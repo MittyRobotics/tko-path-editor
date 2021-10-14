@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextTooltip;
 
@@ -19,6 +20,7 @@ public class UITools {
     public static TextButton.TextButtonStyle textButtonStyle;
     public static TextTooltip.TextTooltipStyle tooltipStyle;
     public static Label.LabelStyle labelStyle;
+    public static ScrollPane.ScrollPaneStyle scrollStyle;
 
     public static BitmapFont SMALL_FONT;
     public static BitmapFont LARGE_FONT;
@@ -40,6 +42,9 @@ public class UITools {
         tooltipStyle.background = Overlay.getInstance().getSkin().getDrawable("button_01");
         tooltipStyle.wrapWidth = 150;
         tooltipStyle.label = labelStyle;
+
+        scrollStyle = new ScrollPane.ScrollPaneStyle();
+        scrollStyle.vScrollKnob = Overlay.getInstance().getSkinAlt().getDrawable("scroll_back_ver");
     }
 
     public static BitmapFont loadSmallFont() {

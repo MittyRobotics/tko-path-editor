@@ -1,6 +1,7 @@
 package com.amhsrobotics.tkopatheditor.util;
 
 import com.amhsrobotics.tkopatheditor.Constants;
+import com.amhsrobotics.tkopatheditor.display.PropertiesWindow;
 import com.amhsrobotics.tkopatheditor.parametrics.SplineHandle;
 import com.amhsrobotics.tkopatheditor.parametrics.SplineManager;
 import com.badlogic.gdx.Gdx;
@@ -72,6 +73,7 @@ public class InputCore implements InputProcessor {
                     DragConstants.draggingSpline = true;
                     DragConstants.handleSelected = h;
                     DragConstants.draggingHandle = h;
+                    PropertiesWindow.getInstance().setTarget(h);
                 }
             }
         }

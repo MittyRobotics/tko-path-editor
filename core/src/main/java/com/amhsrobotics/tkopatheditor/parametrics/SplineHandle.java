@@ -13,14 +13,17 @@ import static com.github.mittyrobotics.core.math.units.ConversionsKt.degrees;
 
 public class SplineHandle {
 
-    Transform point;
-    Circle circle;
-    Circle rotationCircle;
-    SplineWrapper spline;
+    private Transform point;
+    private Circle circle;
+    private Circle rotationCircle;
+    private SplineWrapper spline;
 
-    public SplineHandle(Transform point, SplineWrapper wrapper) {
+    private int id;
+
+    public SplineHandle(Transform point, int ID, SplineWrapper wrapper) {
         this.spline = wrapper;
         this.point = point;
+        this.id = ID;
         circle = new Circle((float) point.getX(), (float) point.getY(), Constants.HANDLE_RADIUS);
         rotationCircle = new Circle(circle.x, circle.y, Constants.HANDLE_ROTATION_RADIUS);
     }
@@ -79,6 +82,10 @@ public class SplineHandle {
         point.setRadians(degrees(deg));
 
         spline.generate();
+    }
+
+    public int getId() {
+        return id;
     }
 
     public double getRotation() {

@@ -39,7 +39,7 @@ public class SplineWrapper {
         waypoints.addAll(Arrays.asList(points));
 
         for(Transform wp : waypoints) {
-            handles.add(new SplineHandle(wp, this));
+            handles.add(new SplineHandle(wp, waypoints.indexOf(wp), this));
         }
 
         color = Constants.SPLINE_DEFAULT_COLOR;

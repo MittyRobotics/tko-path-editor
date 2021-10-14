@@ -60,8 +60,7 @@ public class Overlay implements Disposable {
 
         if(DragConstants.handleSelected != null) {
             if(!PropertiesWindow.getInstance().isWindowOpen()) {
-                PropertiesWindow.getInstance().resetPosition();
-                PropertiesWindow.getInstance().showProperties(DragConstants.handleSelected);
+                PropertiesWindow.getInstance().showProperties();
             }
         } else {
             if(PropertiesWindow.getInstance().isWindowOpen()) {
