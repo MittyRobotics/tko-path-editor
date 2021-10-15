@@ -60,15 +60,13 @@ public class InputCore implements InputProcessor {
             for(SplineHandle h : SplineManager.getInstance().getAllHandles()) {
                 // set rotating handle to true since rotation circle is hovered
                 if(h.isHoveringRotationCircle()) {
-                    if(DragConstants.handleSelected != null) {
+                    if (DragConstants.handleSelected != null) {
                         DragConstants.draggingRotationHandle = true;
 
                         Vector2 mousePosition = CameraManager.mouseScreenToWorld();
                         DragConstants.draggingFromLeft = mousePosition.x < DragConstants.handleSelected.getPoint().getX();
 
                     }
-
-                    // set dragging/selected handle to true since inner circle hovered
                 } else if(h.isHoveringHandle()) {
                     DragConstants.draggingSpline = true;
                     DragConstants.handleSelected = h;
@@ -82,7 +80,7 @@ public class InputCore implements InputProcessor {
         if(DragConstants.handleSelected != null) {
             boolean nonePressed = true;
             for(SplineHandle h : SplineManager.getInstance().getAllHandles()) {
-                if(h.isHoveringHandle() || h.isHoveringRotationCircle()) {
+                if(h.isHoveringHandle() || h.isHoveringRotationCircle() || h.isHoveringHandleModifier()) {
                     nonePressed = false;
                 }
             }

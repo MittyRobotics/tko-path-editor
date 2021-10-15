@@ -4,19 +4,20 @@ import com.amhsrobotics.tkopatheditor.Constants;
 import com.amhsrobotics.tkopatheditor.util.CameraManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL30;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
+import com.badlogic.gdx.utils.Disposable;
 import me.rohanbansal.ricochet.tools.ModifiedShapeRenderer;
 
-import java.util.ArrayList;
-
-public class SplineManager {
+public class SplineManager implements Disposable {
 
     private static SplineManager instance;
 
     private DelayedRemovalArray<SplineWrapper> splines;
 
     private ModifiedShapeRenderer sRenderer;
+    private SpriteBatch batch;
 
 
     public static SplineManager getInstance() {
@@ -29,11 +30,13 @@ public class SplineManager {
     public void init() {
         splines = new DelayedRemovalArray<>();
         sRenderer = new ModifiedShapeRenderer();
+        batch = new SpriteBatch();
     }
 
     public void render(float delta) {
 
         sRenderer.setProjectionMatrix(CameraManager.getInstance().getWorldCamera().getCamera().combined);
+        batch.setProjectionMatrix(CameraManager.getInstance().getWorldCamera().getCamera().combined);
 
         Gdx.gl.glEnable(GL30.GL_BLEND);
         Gdx.gl.glBlendFunc(GL30.GL_SRC_ALPHA, GL30.GL_ONE_MINUS_SRC_ALPHA);
@@ -41,7 +44,7 @@ public class SplineManager {
         sRenderer.setColor(Constants.SPLINE_DEFAULT_COLOR);
         sRenderer.begin(ShapeRenderer.ShapeType.Filled);
         for(SplineWrapper s : splines) {
-            s.draw(sRenderer);
+            s.draw(sRenderer, batch);
         }
         sRenderer.end();
 
@@ -54,8 +57,8 @@ public class SplineManager {
         splines.add(spline);
     }
 
-    public ArrayList<SplineHandle> getAllHandles() {
-        ArrayList<SplineHandle> allHandles = new ArrayList<>();
+    public DelayedRemovalArray<SplineHandle> getAllHandles() {
+        DelayedRemovalArray<SplineHandle> allHandles = new DelayedRemovalArray<>();
         for(SplineWrapper s : splines) {
             allHandles.addAll(s.getHandles());
         }
@@ -69,5 +72,12 @@ public class SplineManager {
             }
         }
         return null;
+    }
+
+    @Override
+    public void dispose() {
+        sRenderer.dispose();
+        batch.dispose();
+        splines.clear();
     }
 }

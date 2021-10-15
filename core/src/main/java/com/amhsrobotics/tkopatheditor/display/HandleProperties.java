@@ -19,7 +19,7 @@ public class HandleProperties {
 
     public void init(Table table) {
         name = new Label("", UITools.labelStyle);
-        subName = new Label("", UITools.labelStyle);
+        subName = new Label("", UITools.labelStyleAlt);
 
         table.add(name);
         table.row();

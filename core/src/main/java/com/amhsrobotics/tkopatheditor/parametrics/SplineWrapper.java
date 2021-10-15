@@ -2,10 +2,11 @@ package com.amhsrobotics.tkopatheditor.parametrics;
 
 import com.amhsrobotics.tkopatheditor.Constants;
 import com.amhsrobotics.tkopatheditor.util.CameraManager;
+import com.amhsrobotics.tkopatheditor.util.DragConstants;
 import com.amhsrobotics.tkopatheditor.util.Tuple;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.github.mittyrobotics.core.math.geometry.Rotation;
 import com.github.mittyrobotics.core.math.geometry.Transform;
 import com.github.mittyrobotics.core.math.geometry.Vector2D;
@@ -18,7 +19,7 @@ import java.util.Arrays;
 public class SplineWrapper {
 
     private ArrayList<Transform> waypoints;
-    private ArrayList<SplineHandle> handles;
+    private DelayedRemovalArray<SplineHandle> handles;
     private SplineType type;
     private Color color;
     private int ID;
@@ -33,15 +34,12 @@ public class SplineWrapper {
         this.type = type;
 
         this.waypoints = new ArrayList<>();
-        this.handles = new ArrayList<>();
+        this.handles = new DelayedRemovalArray<>();
         generatedSpline = new ArrayList<>();
 
         waypoints.addAll(Arrays.asList(points));
 
-        for(Transform wp : waypoints) {
-            handles.add(new SplineHandle(wp, waypoints.indexOf(wp), this));
-        }
-
+        assignHandles();
         color = Constants.SPLINE_DEFAULT_COLOR;
 
         ID = id_count;
@@ -51,7 +49,7 @@ public class SplineWrapper {
     public SplineWrapper(SplineType type) {
 
         this(
-                new Transform[] {
+                new Transform[]{
                         new Transform(new Vector2D(CameraManager.getWorldFocusPoint().x - 100, CameraManager.getWorldFocusPoint().y - 100), new Rotation(0)),
                         new Transform(new Vector2D(CameraManager.getWorldFocusPoint().x, CameraManager.getWorldFocusPoint().y), new Rotation(0)),
                         new Transform(new Vector2D(CameraManager.getWorldFocusPoint().x + 100, CameraManager.getWorldFocusPoint().y), new Rotation(0)),
@@ -61,33 +59,81 @@ public class SplineWrapper {
 
     public void generate() {
 
-        if(type == SplineType.CUBIC_HERMITE) {
+        if (type == SplineType.CUBIC_HERMITE) {
             generatedPath = Path.Companion.cubicHermitePath(waypoints.toArray(new Transform[0]));
-        } else if(type == SplineType.QUINTIC_HERMITE) {
+        } else if (type == SplineType.QUINTIC_HERMITE) {
             generatedPath = Path.Companion.quinticHermitePath(waypoints.toArray(new Transform[0]));
         }
         assert generatedPath != null;
 
         generatedSpline.clear();
-        for(double a = 0; a <= 1.0; a += Constants.TIME_STEP) {
+        for (double a = 0; a <= 1.0; a += Constants.TIME_STEP) {
             Transform transform = generatedPath.getTransform(a);
             generatedSpline.add(new Tuple<>(transform.getX(), transform.getY()));
         }
     }
 
-    public void draw(ModifiedShapeRenderer renderer) {
+    public void draw(ModifiedShapeRenderer renderer, SpriteBatch batch) {
 
         renderer.setColor(color);
-        for(Tuple<Double, Double> t : generatedSpline) {
+        for (Tuple<Double, Double> t : generatedSpline) {
             renderer.circle(t.x.floatValue(), t.y.floatValue(), (float) Constants.LINE_WIDTH);
         }
 
-        for(SplineHandle handle : handles) {
-            handle.render(renderer);
+        for (SplineHandle handle : handles) {
+            handle.render(renderer, batch);
         }
     }
 
-    public ArrayList<SplineHandle> getHandles() {
+    public void addPoint(Transform t, boolean end) {
+        if(end) {
+            waypoints.add(t);
+            handles.add(new SplineHandle(t, waypoints.indexOf(t), this));
+        } else {
+            waypoints.add(0, t);
+            assignHandles();
+        }
+    }
+
+    private void assignHandles() {
+        handles.clear();
+        for (Transform wp : waypoints) {
+            handles.add(new SplineHandle(wp, waypoints.indexOf(wp), this));
+        }
+    }
+
+    public SplineHandle getHandleByID(int id) {
+        for(SplineHandle sh : handles) {
+            if(sh.getId() == id) {
+                return sh;
+            }
+        }
+        return null;
+    }
+
+    public int getLength() {
+        return waypoints.size();
+    }
+
+    public SplineHandle getFirstHandle() {
+        return handles.get(0);
+    }
+
+    public SplineHandle getLastHandle() {
+        return handles.get(handles.size - 1);
+    }
+
+    public void deletePoint(SplineHandle point) {
+        waypoints.remove(point.getPoint());
+        handles.removeValue(point, true);
+        assignHandles();
+
+        DragConstants.handleSelected = null;
+        DragConstants.draggingHandle = null;
+
+    }
+
+    public DelayedRemovalArray<SplineHandle> getHandles() {
         return handles;
     }
 

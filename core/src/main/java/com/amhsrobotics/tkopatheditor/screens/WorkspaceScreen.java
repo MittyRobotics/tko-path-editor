@@ -76,5 +76,6 @@ public class WorkspaceScreen implements Screen {
 	@Override
 	public void dispose() {
 		Overlay.getInstance().dispose();
+		SplineManager.getInstance().dispose();
 	}
 }

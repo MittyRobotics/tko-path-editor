@@ -3,8 +3,10 @@ package com.amhsrobotics.tkopatheditor.util;
 import com.amhsrobotics.tkopatheditor.Constants;
 import com.amhsrobotics.tkopatheditor.display.Overlay;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -20,21 +22,21 @@ public class UITools {
     public static TextButton.TextButtonStyle textButtonStyle;
     public static TextTooltip.TextTooltipStyle tooltipStyle;
     public static Label.LabelStyle labelStyle;
+    public static Label.LabelStyle labelStyleAlt;
     public static ScrollPane.ScrollPaneStyle scrollStyle;
-
-    public static BitmapFont SMALL_FONT;
-    public static BitmapFont LARGE_FONT;
-
     public static void init() {
-        SMALL_FONT = loadSmallFont();
-        LARGE_FONT = loadLargeFont();
 
         labelStyle = new Label.LabelStyle();
-        labelStyle.font = SMALL_FONT;
-        labelStyle.fontColor = Color.SALMON;
+        labelStyle.font = renderFont("font/Pixellari.ttf", 20);
+        labelStyle.fontColor = Color.BLACK;
+
+        labelStyleAlt = new Label.LabelStyle();
+        labelStyleAlt.font = renderFont("font/Pixellari.ttf", 20);
+        labelStyleAlt.fontColor = Color.SALMON;
 
         textButtonStyle = new TextButton.TextButtonStyle();
-        textButtonStyle.font = SMALL_FONT;
+        textButtonStyle.font = labelStyle.font = renderFont("font/Pixellari.ttf", 20);
+        textButtonStyle.fontColor = Color.BLACK;
         textButtonStyle.up = Overlay.getInstance().getSkin().getDrawable("button_03");
         textButtonStyle.down = Overlay.getInstance().getSkin().getDrawable("button_02");
 
@@ -45,6 +47,19 @@ public class UITools {
 
         scrollStyle = new ScrollPane.ScrollPaneStyle();
         scrollStyle.vScrollKnob = Overlay.getInstance().getSkinAlt().getDrawable("scroll_back_ver");
+    }
+
+    public static BitmapFont renderFont(String fontfile, int size, boolean... bold) {
+        FileHandle fontFile = Gdx.files.internal(fontfile);
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(fontFile);
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = size;
+        if (bold.length > 0) {
+            parameter.borderWidth = 2;
+        }
+        BitmapFont fnt = generator.generateFont(parameter);
+        generator.dispose();
+        return fnt;
     }
 
     public static BitmapFont loadSmallFont() {

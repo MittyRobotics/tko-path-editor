@@ -5,4 +5,5 @@ dependencies {
 	api "com.badlogicgames.gdx:gdx:$gdxVersion"
 	api "me.rohanbansal.ricochet:ricochet:1.9.8-SNAPSHOT"
 	api 'com.github.mittyrobotics.tko-libraries:core:be35343ca4'
+	api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
 }
