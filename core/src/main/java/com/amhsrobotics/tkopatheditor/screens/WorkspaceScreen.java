@@ -1,19 +1,17 @@
 package com.amhsrobotics.tkopatheditor.screens;
 
 import com.amhsrobotics.tkopatheditor.display.Overlay;
+import com.amhsrobotics.tkopatheditor.field.FieldManager;
 import com.amhsrobotics.tkopatheditor.parametrics.SplineManager;
 import com.amhsrobotics.tkopatheditor.util.CameraManager;
 import com.amhsrobotics.tkopatheditor.util.DragConstants;
 import com.amhsrobotics.tkopatheditor.util.InputCore;
 import com.amhsrobotics.tkopatheditor.util.SnapGrid;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.github.mittyrobotics.core.math.geometry.Rotation;
-import com.github.mittyrobotics.core.math.geometry.Transform;
-import com.github.mittyrobotics.core.math.geometry.Vector2D;
-import com.github.mittyrobotics.core.math.spline.Path;
 
 import static com.amhsrobotics.tkopatheditor.Constants.BACKGROUND_COLOR;
 
@@ -22,9 +20,11 @@ public class WorkspaceScreen implements Screen {
 
 	public WorkspaceScreen() {
 		CameraManager.getInstance().init();
-		InputCore.getInstance().init();
 		Overlay.getInstance().init();
 		SplineManager.getInstance().init();
+		FieldManager.getInstance().init();
+
+		InputCore.getInstance();
 
 		Gdx.input.setInputProcessor(new InputMultiplexer(
 				Overlay.getInstance().getStage(),
@@ -39,7 +39,14 @@ public class WorkspaceScreen implements Screen {
 
 		CameraManager.getInstance().update();
 
-		SnapGrid.renderGrid(CameraManager.getInstance().getWorldCamera());
+		if(!Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
+			SnapGrid.renderGrid(CameraManager.getInstance().getWorldCamera());
+		}
+		FieldManager.getInstance().render();
+
+		if(Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
+			SnapGrid.renderGrid(CameraManager.getInstance().getWorldCamera());
+		}
 		SplineManager.getInstance().render(delta);
 
 		Overlay.getInstance().update(delta);
@@ -77,5 +84,6 @@ public class WorkspaceScreen implements Screen {
 	public void dispose() {
 		Overlay.getInstance().dispose();
 		SplineManager.getInstance().dispose();
+		FieldManager.getInstance().dispose();
 	}
 }

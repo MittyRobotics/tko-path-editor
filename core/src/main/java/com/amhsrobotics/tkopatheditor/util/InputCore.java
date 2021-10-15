@@ -25,10 +25,6 @@ public class InputCore implements InputProcessor {
         return instance;
     }
 
-    public void init() {
-        CameraManager.getInstance().getWorldCamera().smoothZoomTo(0.6f, 1.5f, Interpolation.exp5);
-    }
-
     @Override
     public boolean keyDown(int keycode) {
 

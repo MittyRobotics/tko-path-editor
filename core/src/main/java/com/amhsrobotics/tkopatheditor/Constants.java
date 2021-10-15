@@ -6,13 +6,13 @@ import com.badlogic.gdx.math.Vector2;
 public class Constants {
 
     public static final float ZOOM_AMPLIFIER = 0.1f;
-    public static final float PAN_AMPLIFIER = 3.5f;
+    public static final float PAN_AMPLIFIER = 4f;
 
     public static final Vector2 WORLD_DIMENSIONS = new Vector2(4000, 4000);
     public static final int GRID_STARTING_GAP = 10;
     public static final int GRID_SIZE = 30;
 
-    public static final float MAX_MAP_ZOOM = 1.6f;
+    public static final float MAX_MAP_ZOOM = 2.0f;
     public static final float MIN_MAP_ZOOM = 0.3f;
 
     public static final Color BACKGROUND_COLOR = Color.valueOf("#4E629CFF");

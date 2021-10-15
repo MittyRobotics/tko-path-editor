@@ -1,6 +1,7 @@
 package com.amhsrobotics.tkopatheditor.util;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -33,6 +34,10 @@ public class CameraManager {
 
         HUDcamera = new CameraController(true);
         HUDViewport = new ExtendViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), HUDcamera.getCamera());
+
+        getWorldCamera().getCamera().zoom = 2.0f;
+        getWorldCamera().getCamera().position.set(new Vector2(WORLD_DIMENSIONS.x / 2, WORLD_DIMENSIONS.y / 2), 0);
+        getWorldCamera().smoothZoomTo(1.0f, 1.5f, Interpolation.exp5);
     }
 
     public void update() {
