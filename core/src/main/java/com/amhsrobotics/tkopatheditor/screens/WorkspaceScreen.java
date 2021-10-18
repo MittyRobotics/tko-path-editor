@@ -39,6 +39,7 @@ public class WorkspaceScreen implements Screen {
 
 		CameraManager.getInstance().update();
 
+
 		if(!Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
 			SnapGrid.renderGrid(CameraManager.getInstance().getWorldCamera());
 		}

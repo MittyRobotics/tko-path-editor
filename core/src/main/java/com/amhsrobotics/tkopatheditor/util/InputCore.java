@@ -2,12 +2,12 @@ package com.amhsrobotics.tkopatheditor.util;
 
 import com.amhsrobotics.tkopatheditor.Constants;
 import com.amhsrobotics.tkopatheditor.display.PropertiesWindow;
+import com.amhsrobotics.tkopatheditor.display.tools.MeasureTool;
 import com.amhsrobotics.tkopatheditor.parametrics.SplineHandle;
 import com.amhsrobotics.tkopatheditor.parametrics.SplineManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
@@ -28,11 +28,8 @@ public class InputCore implements InputProcessor {
     @Override
     public boolean keyDown(int keycode) {
 
-        if(DragConstants.handleSelected != null) {
-            if(keycode == Input.Keys.ESCAPE) {
-                DragConstants.handleSelected = null;
-                DragConstants.draggingRotationHandle = false;
-            }
+        if(keycode == Input.Keys.ESCAPE) {
+            DragConstants.resetAll();
         }
 
         return false;
@@ -51,8 +48,19 @@ public class InputCore implements InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
+        if(DragConstants.measureToolEnabled && Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+
+            if(MeasureTool.getInstance().getPoint1() == null) {
+                MeasureTool.getInstance().setPoint1(MeasureTool.getInstance().getMouseCursor());
+            } else {
+                MeasureTool.getInstance().setPoint2(MeasureTool.getInstance().getMouseCursor());
+            }
+
+            return false;
+        }
+
         // if not dragging a spline
-        if(!DragConstants.draggingSpline && button == Input.Buttons.LEFT) {
+        if(!DragConstants.draggingHandle && button == Input.Buttons.LEFT) {
             for(SplineHandle h : SplineManager.getInstance().getAllHandles()) {
                 // set rotating handle to true since rotation circle is hovered
                 if(h.isHoveringRotationCircle()) {
@@ -64,9 +72,9 @@ public class InputCore implements InputProcessor {
 
                     }
                 } else if(h.isHoveringHandle()) {
-                    DragConstants.draggingSpline = true;
+                    DragConstants.draggingHandle = true;
                     DragConstants.handleSelected = h;
-                    DragConstants.draggingHandle = h;
+                    DragConstants.handleDragged = h;
                     PropertiesWindow.getInstance().setTarget(h);
                 }
             }
@@ -92,9 +100,9 @@ public class InputCore implements InputProcessor {
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 
-        if(DragConstants.draggingSpline) {
-            DragConstants.draggingSpline = false;
-            DragConstants.draggingHandle = null;
+        if(DragConstants.draggingHandle) {
+            DragConstants.draggingHandle = false;
+            DragConstants.handleDragged = null;
         }
 
         if(DragConstants.handleSelected != null) {
@@ -108,12 +116,12 @@ public class InputCore implements InputProcessor {
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        if(DragConstants.draggingSpline) {
+        if(DragConstants.draggingHandle) {
             Vector2 mousePosition = CameraManager.mouseScreenToWorld();
             if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
-                DragConstants.draggingHandle.setPosition(SnapGrid.calculateSnap(mousePosition));
+                DragConstants.handleDragged.setPosition(SnapGrid.calculateSnap(mousePosition));
             } else {
-                DragConstants.draggingHandle.setPosition(mousePosition);
+                DragConstants.handleDragged.setPosition(mousePosition);
             }
         } else if(DragConstants.draggingRotationHandle && DragConstants.handleSelected != null) {
 
@@ -137,7 +145,11 @@ public class InputCore implements InputProcessor {
                 float x = Gdx.input.getDeltaX() * CameraManager.getInstance().getWorldCamera().getCamera().zoom;
                 float y = Gdx.input.getDeltaY() * CameraManager.getInstance().getWorldCamera().getCamera().zoom;
 
-                CameraManager.getInstance().getWorldCamera().getCamera().translate(-x * Constants.PAN_AMPLIFIER, y * Constants.PAN_AMPLIFIER);
+                if(CameraManager.getInstance().getWorldCamera().getCamera().zoom > 1.0) {
+                    CameraManager.getInstance().getWorldCamera().getCamera().translate(-x * Constants.PAN_AMPLIFIER * 2, y * Constants.PAN_AMPLIFIER * 2);
+                } else if(CameraManager.getInstance().getWorldCamera().getCamera().zoom > 0) {
+                    CameraManager.getInstance().getWorldCamera().getCamera().translate(-x * Constants.PAN_AMPLIFIER, y * Constants.PAN_AMPLIFIER);
+                }
             }
         }
 

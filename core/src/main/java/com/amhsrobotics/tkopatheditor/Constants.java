@@ -38,4 +38,10 @@ public class Constants {
     public static final int HANDLE_RADIUS = 10;
     public static final int HANDLE_ROTATION_RADIUS = HANDLE_RADIUS * 2 + 3;
 
+    public static final int MEASURE_TOOL_RADIUS = 7;
+    public static final int MEASURE_TOOL_OUTER_RADIUS = 10;
+    public static final int MEASURE_TOOL_LINE_WIDTH = 5;
+    public static final Color MEASURE_TOOL_COLOR = Color.valueOf("#95E2FFFF");
+    public static final Color MEASURE_TOOL_OUTER_COLOR = Color.valueOf("#2C4B57FF");
+
 }

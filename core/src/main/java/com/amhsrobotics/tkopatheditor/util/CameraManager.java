@@ -74,6 +74,12 @@ public class CameraManager {
         return new Vector2(vec.x, vec.y);
     }
 
+    public static Vector2 vectorWorldtoScreen(Vector2 vector) {
+        Vector3 vec = new Vector3(vector.x, vector.y, 0);
+        getInstance().getWorldCamera().getCamera().project(vec);
+        return new Vector2(vec.x, vec.y);
+    }
+
     public static Vector2 getWorldFocusPoint() {
         return vectorScreenToWorld(
                 new Vector2((float) Gdx.graphics.getWidth() / 2, (float) Gdx.graphics.getHeight() / 2)

@@ -4,8 +4,10 @@ import com.amhsrobotics.tkopatheditor.Constants;
 import com.amhsrobotics.tkopatheditor.util.CameraManager;
 import com.amhsrobotics.tkopatheditor.util.DragConstants;
 import com.amhsrobotics.tkopatheditor.util.Tuple;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.github.mittyrobotics.core.math.geometry.Rotation;
 import com.github.mittyrobotics.core.math.geometry.Transform;
@@ -75,8 +77,15 @@ public class SplineWrapper {
 
     public void draw(ModifiedShapeRenderer renderer, SpriteBatch batch) {
 
+        Vector2 mouse = CameraManager.mouseScreenToWorld();
+
         renderer.setColor(color);
         for (Tuple<Double, Double> t : generatedSpline) {
+
+            if(Math.sqrt((Math.pow(mouse.x - t.x, 2)) + (Math.pow(mouse.y - t.y, 2))) <= Constants.LINE_WIDTH) {
+                // TODO spline touched by mouse cursor
+            }
+
             renderer.circle(t.x.floatValue(), t.y.floatValue(), (float) Constants.LINE_WIDTH);
         }
 
@@ -129,7 +138,7 @@ public class SplineWrapper {
         assignHandles();
 
         DragConstants.handleSelected = null;
-        DragConstants.draggingHandle = null;
+        DragConstants.handleDragged = null;
 
     }
 

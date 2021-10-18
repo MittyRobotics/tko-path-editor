@@ -7,8 +7,10 @@ import com.amhsrobotics.tkopatheditor.util.DragConstants;
 import com.amhsrobotics.tkopatheditor.util.ModifiedStage;
 import com.amhsrobotics.tkopatheditor.util.UITools;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Disposable;
 
@@ -17,11 +19,13 @@ public class Overlay implements Disposable {
     private static Overlay instance;
     private ModifiedStage stage;
     private SpriteBatch overlayBatch;
+    private ShapeRenderer overlayShape;
 
     private TextureAtlas atlas;
     private TextureAtlas atlasAlt;
     private Skin skin;
     private Skin skinAlt;
+    private BitmapFont fieldFont;
 
     public static Overlay getInstance() {
         if(instance == null) {
@@ -33,6 +37,7 @@ public class Overlay implements Disposable {
     public void init() {
 
         overlayBatch = new SpriteBatch();
+        overlayShape = new ShapeRenderer();
         stage = new ModifiedStage(CameraManager.getInstance().getHUDViewport(), overlayBatch);
 
         atlas = new TextureAtlas(Gdx.files.internal(Constants.UI_SKIN));
@@ -40,6 +45,8 @@ public class Overlay implements Disposable {
 
         atlasAlt = new TextureAtlas(Gdx.files.internal(Constants.UI_SKIN_ALT));
         skinAlt = new Skin(atlasAlt);
+
+        fieldFont = UITools.renderFont("font/Abel-Regular.ttf", 18, true);
 
         UITools.init();
         PropertiesWindow.getInstance().init();
@@ -56,7 +63,20 @@ public class Overlay implements Disposable {
     }
 
     public void update(float delta) {
-        stage.update(delta);
+        if(DragConstants.measureToolEnabled) {
+            overlayShape.setProjectionMatrix(CameraManager.getInstance().getHUDcamera().getCamera().combined);
+            overlayShape.setColor(Constants.MEASURE_TOOL_COLOR);
+            overlayShape.begin(ShapeRenderer.ShapeType.Filled);
+
+            overlayShape.rectLine(0, 0, Gdx.graphics.getWidth(), 0, 10);
+            overlayShape.rectLine(0, 0, 0, Gdx.graphics.getHeight(), 10);
+            overlayShape.rectLine(Gdx.graphics.getWidth(), 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), 10);
+            overlayShape.rectLine(0, Gdx.graphics.getHeight(), Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), 10);
+
+            overlayShape.end();
+
+            MeasureTool.getInstance().render(overlayShape, overlayBatch, fieldFont);
+        }
 
         if(DragConstants.handleSelected != null) {
             if(!PropertiesWindow.getInstance().isWindowOpen()) {
@@ -67,6 +87,8 @@ public class Overlay implements Disposable {
                 PropertiesWindow.getInstance().closeProperties();
             }
         }
+
+        stage.update(delta);
     }
 
     public ModifiedStage getStage() {
@@ -87,5 +109,8 @@ public class Overlay implements Disposable {
         atlasAlt.dispose();
         skin.dispose();
         skinAlt.dispose();
+        overlayBatch.dispose();
+        overlayShape.dispose();
+        fieldFont.dispose();
     }
 }
