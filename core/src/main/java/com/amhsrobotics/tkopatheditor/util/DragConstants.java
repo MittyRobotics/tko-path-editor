@@ -1,8 +1,12 @@
 package com.amhsrobotics.tkopatheditor.util;
 
 import com.amhsrobotics.tkopatheditor.parametrics.SplineHandle;
+import com.amhsrobotics.tkopatheditor.parametrics.SplineWrapper;
 
 public class DragConstants {
+
+    public static boolean splineSelected;
+    public static SplineWrapper splineDragged;
 
     public static boolean draggingHandle = false;
     public static SplineHandle handleDragged = null;
@@ -21,5 +25,7 @@ public class DragConstants {
         draggingRotationHandle = false;
         draggingFromLeft = false;
         measureToolEnabled = false;
+        splineSelected = false;
+        splineDragged = null;
     }
 }

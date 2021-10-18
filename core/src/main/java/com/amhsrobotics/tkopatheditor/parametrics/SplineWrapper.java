@@ -5,6 +5,7 @@ import com.amhsrobotics.tkopatheditor.util.CameraManager;
 import com.amhsrobotics.tkopatheditor.util.DragConstants;
 import com.amhsrobotics.tkopatheditor.util.Tuple;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -79,13 +80,24 @@ public class SplineWrapper {
 
         Vector2 mouse = CameraManager.mouseScreenToWorld();
 
-        renderer.setColor(color);
         for (Tuple<Double, Double> t : generatedSpline) {
 
             if(Math.sqrt((Math.pow(mouse.x - t.x, 2)) + (Math.pow(mouse.y - t.y, 2))) <= Constants.LINE_WIDTH) {
-                // TODO spline touched by mouse cursor
-            }
+                if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
 
+//                        DragConstants.resetAll();
+//                        DragConstants.splineSelected = true;
+//                        DragConstants.splineDragged = this;
+
+                }
+            }
+//
+//            if(DragConstants.splineSelected && DragConstants.splineDragged == this) {
+//                renderer.setColor(Color.LIME);
+//                renderer.circle(t.x.floatValue(), t.y.floatValue(), (float) Constants.LINE_WIDTH + 1);
+//            }
+
+            renderer.setColor(color);
             renderer.circle(t.x.floatValue(), t.y.floatValue(), (float) Constants.LINE_WIDTH);
         }
 

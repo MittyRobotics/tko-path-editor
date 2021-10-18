@@ -26,7 +26,7 @@ public class SplineHandle {
     private Circle rotationCircle;
     private SplineWrapper spline;
 
-    private Sprite addPoint, deletePoint;
+    private Sprite addButton, deleteButton;
 
     private int id;
 
@@ -37,11 +37,11 @@ public class SplineHandle {
         circle = new Circle((float) point.getX(), (float) point.getY(), Constants.HANDLE_RADIUS);
         rotationCircle = new Circle(circle.x, circle.y, Constants.HANDLE_ROTATION_RADIUS);
 
-        addPoint = new Sprite(new Texture(Gdx.files.internal("png/plus.png")));
-        deletePoint = new Sprite(new Texture(Gdx.files.internal("png/minus.png")));
+        addButton = new Sprite(new Texture(Gdx.files.internal("png/plus.png")));
+        deleteButton = new Sprite(new Texture(Gdx.files.internal("png/minus.png")));
 
-        addPoint.setOriginCenter();
-        deletePoint.setOriginCenter();
+        addButton.setOriginCenter();
+        deleteButton.setOriginCenter();
 
     }
 
@@ -63,29 +63,24 @@ public class SplineHandle {
 
             if(spline.getLastHandle() == this || spline.getFirstHandle() == this) {
 
-                addPoint.setOriginBasedPosition((float) point.getX() + (spline.getFirstHandle() != this ? 35 : -35), (float) point.getY() + 10);
-                deletePoint.setOriginBasedPosition((float) point.getX() + (spline.getFirstHandle() != this ? 35 : -35), (float) point.getY() - 10);
+                addButton.setOriginBasedPosition((float) point.getX() + (spline.getFirstHandle() != this ? 35 : -35), (float) point.getY() + 10);
+                deleteButton.setOriginBasedPosition((float) point.getX() + (spline.getFirstHandle() != this ? 35 : -35), (float) point.getY() - 10);
 
                 renderer.end();
                 Gdx.gl.glDisable(GL30.GL_BLEND);
 
                 batch.begin();
-                addPoint.draw(batch);
+                addButton.draw(batch);
 
-                if(addPoint.getBoundingRectangle().contains(CameraManager.mouseScreenToWorld()) && Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-                    spline.addPoint(
-                            new Transform(new Vector2D(point.getX() + (spline.getFirstHandle() != this ? 50 : -50), point.getY()), new Rotation(0)),
-                            spline.getFirstHandle() != this
-                    );
-                    spline.generate();
+                if(addButton.getBoundingRectangle().contains(CameraManager.mouseScreenToWorld()) && Gdx.input.isButtonPressed(Input.Buttons.LEFT) && !DragConstants.draggingRotationHandle) {
+                   createPoint();
                 }
 
                 if(spline.getLength() > 2) {
-                    deletePoint.draw(batch);
+                    deleteButton.draw(batch);
 
-                    if(deletePoint.getBoundingRectangle().contains(CameraManager.mouseScreenToWorld()) && Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-                        spline.deletePoint(this);
-                        spline.generate();
+                    if(deleteButton.getBoundingRectangle().contains(CameraManager.mouseScreenToWorld()) && Gdx.input.isButtonPressed(Input.Buttons.LEFT) && !DragConstants.draggingRotationHandle) {
+                        deletePoint();
                     }
                 }
                 batch.end();
@@ -94,18 +89,17 @@ public class SplineHandle {
                 Gdx.gl.glBlendFunc(GL30.GL_SRC_ALPHA, GL30.GL_ONE_MINUS_SRC_ALPHA);
                 renderer.begin(ShapeRenderer.ShapeType.Filled);
             } else {
-                deletePoint.setOriginBasedPosition((float) point.getX(), (float) point.getY() - 35);
+                deleteButton.setOriginBasedPosition((float) point.getX(), (float) point.getY() - 35);
 
                 renderer.end();
                 Gdx.gl.glDisable(GL30.GL_BLEND);
 
                 batch.begin();
 
-                deletePoint.draw(batch);
+                deleteButton.draw(batch);
 
-                if(deletePoint.getBoundingRectangle().contains(CameraManager.mouseScreenToWorld()) && Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-                    spline.deletePoint(this);
-                    spline.generate();
+                if(deleteButton.getBoundingRectangle().contains(CameraManager.mouseScreenToWorld()) && Gdx.input.isButtonPressed(Input.Buttons.LEFT) && !DragConstants.draggingRotationHandle) {
+                    deletePoint();
                 }
 
                 batch.end();
@@ -134,8 +128,23 @@ public class SplineHandle {
 
     }
 
+    public void createPoint() {
+        spline.addPoint(
+                new Transform(new Vector2D(point.getX() + (spline.getFirstHandle() != this ? 50 : -50), point.getY()), new Rotation(0)),
+                spline.getFirstHandle() != this
+        );
+        spline.generate();
+    }
+
+    public void deletePoint() {
+        if(spline.getLength() > 2) {
+            spline.deletePoint(this);
+            spline.generate();
+        }
+    }
+
     public boolean isHoveringHandleModifier() {
-        return addPoint.getBoundingRectangle().contains(CameraManager.mouseScreenToWorld()) || deletePoint.getBoundingRectangle().contains(CameraManager.mouseScreenToWorld());
+        return addButton.getBoundingRectangle().contains(CameraManager.mouseScreenToWorld()) || deleteButton.getBoundingRectangle().contains(CameraManager.mouseScreenToWorld());
     }
 
     public boolean isHoveringHandle() {

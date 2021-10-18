@@ -4,8 +4,7 @@ import com.amhsrobotics.tkopatheditor.display.Overlay;
 import com.amhsrobotics.tkopatheditor.field.FieldManager;
 import com.amhsrobotics.tkopatheditor.parametrics.SplineManager;
 import com.amhsrobotics.tkopatheditor.util.CameraManager;
-import com.amhsrobotics.tkopatheditor.util.DragConstants;
-import com.amhsrobotics.tkopatheditor.util.InputCore;
+import com.amhsrobotics.tkopatheditor.util.input.InputCore;
 import com.amhsrobotics.tkopatheditor.util.SnapGrid;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -28,7 +27,8 @@ public class WorkspaceScreen implements Screen {
 
 		Gdx.input.setInputProcessor(new InputMultiplexer(
 				Overlay.getInstance().getStage(),
-				InputCore.getInstance()
+				InputCore.getInstance(),
+				InputCore.getMultipleKeyProcessor()
 		));
 	}
 

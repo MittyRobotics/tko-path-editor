@@ -1,15 +1,22 @@
-package com.amhsrobotics.tkopatheditor.util;
+package com.amhsrobotics.tkopatheditor.util.input;
 
 import com.amhsrobotics.tkopatheditor.Constants;
 import com.amhsrobotics.tkopatheditor.display.PropertiesWindow;
+import com.amhsrobotics.tkopatheditor.display.tools.CubicSplineTool;
 import com.amhsrobotics.tkopatheditor.display.tools.MeasureTool;
+import com.amhsrobotics.tkopatheditor.display.tools.QuinticSplineTool;
 import com.amhsrobotics.tkopatheditor.parametrics.SplineHandle;
 import com.amhsrobotics.tkopatheditor.parametrics.SplineManager;
+import com.amhsrobotics.tkopatheditor.util.CameraManager;
+import com.amhsrobotics.tkopatheditor.util.DragConstants;
+import com.amhsrobotics.tkopatheditor.util.SnapGrid;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.IntSet;
 
 import static com.github.mittyrobotics.core.math.units.ConversionsKt.degrees;
 
@@ -17,6 +24,7 @@ import static com.github.mittyrobotics.core.math.units.ConversionsKt.degrees;
 public class InputCore implements InputProcessor {
 
     private static InputCore instance;
+    private static final IntSet downKeys = new IntSet(20);
 
     public static InputCore getInstance() {
         if(instance == null) {
@@ -25,8 +33,56 @@ public class InputCore implements InputProcessor {
         return instance;
     }
 
+    public static InputAdapter getMultipleKeyProcessor() {
+        return new InputAdapter() {
+            public boolean keyDown (int keycode) {
+                downKeys.add(keycode);
+                if (downKeys.size >= 2){
+                    onMultipleKeysDown(keycode);
+                }
+                return true;
+            }
+
+            public boolean keyUp (int keycode) {
+                downKeys.remove(keycode);
+                return true;
+            }
+        };
+    }
+
+    private static void onMultipleKeysDown(int mostRecentKeycode) {
+
+        if(downKeys.contains(Input.Keys.SHIFT_LEFT)) {
+            if (downKeys.size == 2 && mostRecentKeycode == Input.Keys.EQUALS){
+                if(DragConstants.handleSelected != null) DragConstants.handleSelected.createPoint();
+            }
+        }
+
+        if (downKeys.contains(Input.Keys.ALT_LEFT) || downKeys.contains(Input.Keys.ALT_RIGHT)){
+            if (downKeys.size == 2 && mostRecentKeycode == Input.Keys.F4){
+                Gdx.app.exit();
+            }
+        }
+    }
+
     @Override
     public boolean keyDown(int keycode) {
+
+        if(keycode == Input.Keys.MINUS) {
+            if(DragConstants.handleSelected != null) DragConstants.handleSelected.deletePoint();
+        }
+
+        if(keycode == Input.Keys.M) {
+            MeasureTool.getInstance().onClick();
+        }
+
+        if(keycode == Input.Keys.Q) {
+            QuinticSplineTool.getInstance().onClick();
+        }
+
+        if(keycode == Input.Keys.C) {
+            CubicSplineTool.getInstance().onClick();
+        }
 
         if(keycode == Input.Keys.ESCAPE) {
             DragConstants.resetAll();
