@@ -17,6 +17,7 @@ public class DragConstants {
     public static boolean draggingFromLeft = false;
 
     public static boolean measureToolEnabled = false;
+    public static boolean waypointToolEnabled = false;
 
     public static void resetAll() {
         draggingHandle = false;
@@ -27,5 +28,6 @@ public class DragConstants {
         measureToolEnabled = false;
         splineSelected = false;
         splineDragged = null;
+        waypointToolEnabled = false;
     }
 }

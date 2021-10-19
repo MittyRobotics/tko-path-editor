@@ -5,6 +5,7 @@ import com.amhsrobotics.tkopatheditor.display.PropertiesWindow;
 import com.amhsrobotics.tkopatheditor.display.tools.CubicSplineTool;
 import com.amhsrobotics.tkopatheditor.display.tools.MeasureTool;
 import com.amhsrobotics.tkopatheditor.display.tools.QuinticSplineTool;
+import com.amhsrobotics.tkopatheditor.display.tools.WaypointTool;
 import com.amhsrobotics.tkopatheditor.parametrics.SplineHandle;
 import com.amhsrobotics.tkopatheditor.parametrics.SplineManager;
 import com.amhsrobotics.tkopatheditor.util.CameraManager;
@@ -111,6 +112,12 @@ public class InputCore implements InputProcessor {
             } else {
                 MeasureTool.getInstance().setPoint2(MeasureTool.getInstance().getMouseCursor());
             }
+
+            return false;
+        }
+
+        if(DragConstants.waypointToolEnabled && Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
+            WaypointTool.getInstance().createWaypoint(WaypointTool.getInstance().getMouseCursor());
 
             return false;
         }

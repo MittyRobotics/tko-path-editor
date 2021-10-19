@@ -2,6 +2,7 @@ package com.amhsrobotics.tkopatheditor.screens;
 
 import com.amhsrobotics.tkopatheditor.display.Overlay;
 import com.amhsrobotics.tkopatheditor.field.FieldManager;
+import com.amhsrobotics.tkopatheditor.field.WaypointManager;
 import com.amhsrobotics.tkopatheditor.parametrics.SplineManager;
 import com.amhsrobotics.tkopatheditor.util.CameraManager;
 import com.amhsrobotics.tkopatheditor.util.input.InputCore;
@@ -22,8 +23,7 @@ public class WorkspaceScreen implements Screen {
 		Overlay.getInstance().init();
 		SplineManager.getInstance().init();
 		FieldManager.getInstance().init();
-
-		InputCore.getInstance();
+		WaypointManager.getInstance().init();
 
 		Gdx.input.setInputProcessor(new InputMultiplexer(
 				Overlay.getInstance().getStage(),

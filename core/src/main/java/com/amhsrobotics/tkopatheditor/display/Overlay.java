@@ -63,7 +63,7 @@ public class Overlay implements Disposable {
     }
 
     public void update(float delta) {
-        if(DragConstants.measureToolEnabled) {
+        if(DragConstants.measureToolEnabled || DragConstants.waypointToolEnabled) {
             overlayShape.setProjectionMatrix(CameraManager.getInstance().getHUDcamera().getCamera().combined);
             overlayShape.setColor(Constants.MEASURE_TOOL_COLOR);
             overlayShape.begin(ShapeRenderer.ShapeType.Filled);
@@ -75,7 +75,11 @@ public class Overlay implements Disposable {
 
             overlayShape.end();
 
-            MeasureTool.getInstance().render(overlayShape, overlayBatch, fieldFont);
+            if(DragConstants.measureToolEnabled) {
+                MeasureTool.getInstance().render(overlayShape, overlayBatch, fieldFont);
+            } else if(DragConstants.waypointToolEnabled) {
+                WaypointTool.getInstance().render(overlayShape, overlayBatch, fieldFont);
+            }
         }
 
         if(DragConstants.handleSelected != null) {

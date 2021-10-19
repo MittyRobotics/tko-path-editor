@@ -33,6 +33,10 @@ public class FieldConstants {
         return new Vector2(locationInInchesX, locationInInchesY);
     }
 
+    public static Vector2 inchesToRelativePixels(Vector2 position) {
+        return new Vector2((float) (position.x * PIXELS_PER_INCH_WIDTH) + zero.x, (float) (position.y * PIXELS_PER_INCH_HEIGHT) + zero.y);
+    }
+
     public static Vector2 pixelToInches(Vector2 vec) {
         return new Vector2((float) (vec.x / PIXELS_PER_INCH_WIDTH), (float) (vec.y / PIXELS_PER_INCH_HEIGHT));
     }

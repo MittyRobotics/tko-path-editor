@@ -44,4 +44,6 @@ public class Constants {
     public static final Color MEASURE_TOOL_COLOR = Color.valueOf("#95E2FFFF");
     public static final Color MEASURE_TOOL_OUTER_COLOR = Color.valueOf("#2C4B57FF");
 
+    public static final int WAYPOINT_TOOL_RADIUS = 7;
+    public static final Color WAYPOINT_TOOL_CIRCLE_COLOR = Color.valueOf("#2C4B57FF");
 }
