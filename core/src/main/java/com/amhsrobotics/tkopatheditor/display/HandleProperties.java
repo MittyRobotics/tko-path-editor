@@ -1,14 +1,17 @@
 package com.amhsrobotics.tkopatheditor.display;
 
 import com.amhsrobotics.tkopatheditor.util.UITools;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 public class HandleProperties {
 
     private static HandleProperties instance;
 
-    private Label name, subName;
+    private Table table;
 
     public static HandleProperties getInstance() {
         if(instance == null) {
@@ -18,19 +21,35 @@ public class HandleProperties {
     }
 
     public void init(Table table) {
-        name = new Label("", UITools.labelStyle);
-        subName = new Label("", UITools.labelStyleAlt);
+        this.table = table;
+    }
 
+    public void setName(String val) {
+        Label name = new Label(val, UITools.labelStyle);
+        table.row();
         table.add(name);
+    }
+
+    public void setSubName(String val) {
+        Label subName = new Label(val, UITools.labelStyleAlt);
         table.row();
         table.add(subName);
     }
 
-    public void setName(String val) {
-        name.setText(val);
+    public void addButton(String b1, Runnable toRun) {
+        TextButton btn = new TextButton(b1, UITools.textButtonStyle);
+        btn.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                toRun.run();
+            }
+        });
+        this.table.row().pad(10);
+        this.table.add(btn);
     }
 
-    public void setSubName(String val) {
-        subName.setText(val);
+    public void reset() {
+        table.clear();
     }
+
 }

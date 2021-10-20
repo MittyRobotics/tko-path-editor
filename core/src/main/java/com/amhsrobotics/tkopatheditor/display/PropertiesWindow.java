@@ -1,6 +1,8 @@
 package com.amhsrobotics.tkopatheditor.display;
 
 import com.amhsrobotics.tkopatheditor.parametrics.SplineHandle;
+import com.amhsrobotics.tkopatheditor.parametrics.SplineManager;
+import com.amhsrobotics.tkopatheditor.util.DragConstants;
 import com.amhsrobotics.tkopatheditor.util.UITools;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Interpolation;
@@ -66,9 +68,14 @@ public class PropertiesWindow {
 
     public void setTarget(SplineHandle handle) {
         currentHandle = handle;
+        HandleProperties.getInstance().reset();
 
         HandleProperties.getInstance().setName(handle.getSpline().getType().toString().replace("_", " ") + " " + handle.getSpline().getID());
         HandleProperties.getInstance().setSubName("Point " + handle.getId());
+        HandleProperties.getInstance().addButton("Delete Spline", () -> {
+            SplineManager.getInstance().deleteSpline(handle.getSpline());
+            DragConstants.resetAll();
+        });
     }
 
     public void showProperties() {

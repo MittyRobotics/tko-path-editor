@@ -80,4 +80,8 @@ public class SplineManager implements Disposable {
         batch.dispose();
         splines.clear();
     }
+
+    public void deleteSpline(SplineWrapper spline) {
+        splines.removeValue(spline, true);
+    }
 }

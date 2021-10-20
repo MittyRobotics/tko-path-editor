@@ -185,15 +185,16 @@ public class InputCore implements InputProcessor {
         if(DragConstants.draggingHandle) {
             Vector2 mousePosition = CameraManager.mouseScreenToWorld();
             if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && DragConstants.handleDragged != null) {
+                DragConstants.handleDragged.setPosition(SnapGrid.calculateSnap(mousePosition));
                 for(Waypoint wp : WaypointManager.getInstance().getWaypoints()) {
                     if(wp.getPositionPixels().dst(mousePosition) <= Constants.GRID_SIZE) {
                         DragConstants.handleDragged.setPosition(wp.getPositionPixels());
-                    } else {
-                        DragConstants.handleDragged.setPosition(SnapGrid.calculateSnap(mousePosition));
                     }
                 }
             } else {
-                DragConstants.handleDragged.setPosition(mousePosition);
+                if(DragConstants.handleDragged != null) {
+                    DragConstants.handleDragged.setPosition(mousePosition);
+                }
             }
         } else if(DragConstants.draggingRotationHandle && DragConstants.handleSelected != null) {
 
