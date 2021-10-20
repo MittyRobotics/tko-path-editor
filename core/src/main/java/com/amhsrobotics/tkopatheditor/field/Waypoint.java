@@ -71,4 +71,8 @@ public class Waypoint {
 
         batch.end();
     }
+
+    public Vector2 getPositionPixels() {
+        return position;
+    }
 }

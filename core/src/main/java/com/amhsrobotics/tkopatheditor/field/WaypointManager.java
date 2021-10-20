@@ -29,6 +29,10 @@ public class WaypointManager {
         }
     }
 
+    public DelayedRemovalArray<Waypoint> getWaypoints() {
+        return waypoints;
+    }
+
     public void addWaypoint(Waypoint w) {
         waypoints.add(w);
     }

@@ -6,6 +6,8 @@ import com.amhsrobotics.tkopatheditor.display.tools.CubicSplineTool;
 import com.amhsrobotics.tkopatheditor.display.tools.MeasureTool;
 import com.amhsrobotics.tkopatheditor.display.tools.QuinticSplineTool;
 import com.amhsrobotics.tkopatheditor.display.tools.WaypointTool;
+import com.amhsrobotics.tkopatheditor.field.Waypoint;
+import com.amhsrobotics.tkopatheditor.field.WaypointManager;
 import com.amhsrobotics.tkopatheditor.parametrics.SplineHandle;
 import com.amhsrobotics.tkopatheditor.parametrics.SplineManager;
 import com.amhsrobotics.tkopatheditor.util.CameraManager;
@@ -135,6 +137,7 @@ public class InputCore implements InputProcessor {
 
                     }
                 } else if(h.isHoveringHandle()) {
+                    DragConstants.resetAll();
                     DragConstants.draggingHandle = true;
                     DragConstants.handleSelected = h;
                     DragConstants.handleDragged = h;
@@ -181,8 +184,14 @@ public class InputCore implements InputProcessor {
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         if(DragConstants.draggingHandle) {
             Vector2 mousePosition = CameraManager.mouseScreenToWorld();
-            if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
-                DragConstants.handleDragged.setPosition(SnapGrid.calculateSnap(mousePosition));
+            if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && DragConstants.handleDragged != null) {
+                for(Waypoint wp : WaypointManager.getInstance().getWaypoints()) {
+                    if(wp.getPositionPixels().dst(mousePosition) <= Constants.GRID_SIZE) {
+                        DragConstants.handleDragged.setPosition(wp.getPositionPixels());
+                    } else {
+                        DragConstants.handleDragged.setPosition(SnapGrid.calculateSnap(mousePosition));
+                    }
+                }
             } else {
                 DragConstants.handleDragged.setPosition(mousePosition);
             }
