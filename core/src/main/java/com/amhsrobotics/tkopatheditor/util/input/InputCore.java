@@ -119,8 +119,9 @@ public class InputCore implements InputProcessor {
         }
 
         if(DragConstants.waypointToolEnabled && Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
-            WaypointTool.getInstance().createWaypoint(WaypointTool.getInstance().getMouseCursor());
-
+            Waypoint w = WaypointTool.getInstance().createWaypoint(WaypointTool.getInstance().getMouseCursor());
+            DragConstants.waypointSelected = w;
+            PropertiesWindow.getInstance().setTarget(w);
             return false;
         }
 
@@ -147,16 +148,27 @@ public class InputCore implements InputProcessor {
         }
 
         // set selection to none if clicking on empty space
-        if(DragConstants.handleSelected != null) {
+        if(DragConstants.handleSelected != null || DragConstants.waypointSelected != null) {
             boolean nonePressed = true;
             for(SplineHandle h : SplineManager.getInstance().getAllHandles()) {
                 if(h.isHoveringHandle() || h.isHoveringRotationCircle() || h.isHoveringHandleModifier()) {
                     nonePressed = false;
                 }
             }
+            for(Waypoint w : WaypointManager.getInstance().getWaypoints()) {
+                if(w.isHovered()) {
+                    nonePressed = false;
+                }
+            }
             if(nonePressed) {
-                DragConstants.handleSelected = null;
-                DragConstants.draggingRotationHandle = false;
+                DragConstants.resetAll();
+            }
+        }
+
+        for(Waypoint w : WaypointManager.getInstance().getWaypoints()) {
+            if(w.isHovered() && Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+                DragConstants.resetAll();
+                DragConstants.waypointSelected = w;
             }
         }
 
@@ -187,7 +199,7 @@ public class InputCore implements InputProcessor {
             if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && DragConstants.handleDragged != null) {
                 DragConstants.handleDragged.setPosition(SnapGrid.calculateSnap(mousePosition));
                 for(Waypoint wp : WaypointManager.getInstance().getWaypoints()) {
-                    if(wp.getPositionPixels().dst(mousePosition) <= Constants.GRID_SIZE) {
+                    if(wp.getPositionPixels().dst(mousePosition) <= 20) {
                         DragConstants.handleDragged.setPosition(wp.getPositionPixels());
                     }
                 }

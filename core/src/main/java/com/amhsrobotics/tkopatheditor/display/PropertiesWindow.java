@@ -1,5 +1,7 @@
 package com.amhsrobotics.tkopatheditor.display;
 
+import com.amhsrobotics.tkopatheditor.field.Waypoint;
+import com.amhsrobotics.tkopatheditor.field.WaypointManager;
 import com.amhsrobotics.tkopatheditor.parametrics.SplineHandle;
 import com.amhsrobotics.tkopatheditor.parametrics.SplineManager;
 import com.amhsrobotics.tkopatheditor.util.DragConstants;
@@ -75,6 +77,19 @@ public class PropertiesWindow {
         HandleProperties.getInstance().addButton("Delete Spline", () -> {
             SplineManager.getInstance().deleteSpline(handle.getSpline());
             DragConstants.resetAll();
+        });
+    }
+
+    public void setTarget(Waypoint waypoint) {
+        HandleProperties.getInstance().reset();
+
+        HandleProperties.getInstance().setName("Waypoint " + waypoint.getId());
+        HandleProperties.getInstance().addButton("Delete Waypoint", () -> {
+            WaypointManager.getInstance().deleteWaypoint(waypoint);
+            DragConstants.resetAll();
+        });
+        HandleProperties.getInstance().addButton("Set Zero", () -> {
+            waypoint.setAsZero();
         });
     }
 

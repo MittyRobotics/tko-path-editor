@@ -37,11 +37,25 @@ public class WaypointManager {
         waypoints.add(w);
     }
 
-    public void addWaypointPixels(float x, float y) {
-        waypoints.add(new Waypoint(new Vector2(x, y), false));
+    public Waypoint addWaypointPixels(float x, float y) {
+        Waypoint w = new Waypoint(new Vector2(x, y), false);
+        waypoints.add(w);
+        return w;
     }
 
-    public void addWaypointInches(float x, float y) {
-        waypoints.add(new Waypoint(new Vector2(x, y), true));
+    public Waypoint addWaypointInches(float x, float y) {
+        Waypoint w = new Waypoint(new Vector2(x, y), true);
+        waypoints.add(w);
+        return w;
+    }
+
+    public void deleteWaypoint(Waypoint waypoint) {
+        waypoints.removeValue(waypoint, true);
+    }
+
+    public void regenerateAllWaypoints() {
+        for(Waypoint w : waypoints) {
+            w.regenerateInchPosition();
+        }
     }
 }

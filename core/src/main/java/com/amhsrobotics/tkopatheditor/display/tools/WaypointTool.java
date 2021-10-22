@@ -3,6 +3,7 @@ package com.amhsrobotics.tkopatheditor.display.tools;
 import com.amhsrobotics.tkopatheditor.Constants;
 import com.amhsrobotics.tkopatheditor.blueprints.ToolButton;
 import com.amhsrobotics.tkopatheditor.field.FieldConstants;
+import com.amhsrobotics.tkopatheditor.field.Waypoint;
 import com.amhsrobotics.tkopatheditor.field.WaypointManager;
 import com.amhsrobotics.tkopatheditor.util.CameraManager;
 import com.amhsrobotics.tkopatheditor.util.DragConstants;
@@ -91,8 +92,8 @@ public class WaypointTool implements ToolButton {
     }
 
 
-    public void createWaypoint(Vector2 mouseCursor) {
+    public Waypoint createWaypoint(Vector2 mouseCursor) {
         Vector2 inches = FieldConstants.pixelToRelativeInches(mouseCursor);
-        WaypointManager.getInstance().addWaypointInches(inches.x, inches.y);
+        return WaypointManager.getInstance().addWaypointInches(inches.x, inches.y);
     }
 }

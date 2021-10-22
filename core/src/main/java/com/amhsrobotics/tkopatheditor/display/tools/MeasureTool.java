@@ -3,6 +3,8 @@ package com.amhsrobotics.tkopatheditor.display.tools;
 import com.amhsrobotics.tkopatheditor.Constants;
 import com.amhsrobotics.tkopatheditor.blueprints.ToolButton;
 import com.amhsrobotics.tkopatheditor.field.FieldConstants;
+import com.amhsrobotics.tkopatheditor.field.Waypoint;
+import com.amhsrobotics.tkopatheditor.field.WaypointManager;
 import com.amhsrobotics.tkopatheditor.util.CameraManager;
 import com.amhsrobotics.tkopatheditor.util.DragConstants;
 import com.amhsrobotics.tkopatheditor.util.SnapGrid;
@@ -87,6 +89,11 @@ public class MeasureTool implements ToolButton {
         mouseCursor = CameraManager.mouseScreenToWorld();
         if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
             mouseCursor = SnapGrid.calculateSnap(mouseCursor);
+            for(Waypoint wp : WaypointManager.getInstance().getWaypoints()) {
+                if(wp.getPositionPixels().dst(mouseCursor) <= 20) {
+                    mouseCursor.set(wp.getPositionPixels());
+                }
+            }
         }
 
         renderer.setColor(Constants.HANDLE_ROTATION_COLOR);

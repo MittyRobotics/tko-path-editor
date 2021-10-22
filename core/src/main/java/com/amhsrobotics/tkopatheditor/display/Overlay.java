@@ -82,7 +82,7 @@ public class Overlay implements Disposable {
             }
         }
 
-        if(DragConstants.handleSelected != null) {
+        if(DragConstants.handleSelected != null || DragConstants.waypointSelected != null) {
             if(!PropertiesWindow.getInstance().isWindowOpen()) {
                 PropertiesWindow.getInstance().showProperties();
             }
