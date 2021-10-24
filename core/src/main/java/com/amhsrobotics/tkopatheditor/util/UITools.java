@@ -22,6 +22,7 @@ public class UITools {
     public static TextButton.TextButtonStyle textButtonStyle;
     public static TextTooltip.TextTooltipStyle tooltipStyle;
     public static Label.LabelStyle labelStyle;
+    public static Label.LabelStyle labelStyleSmall;
     public static Label.LabelStyle labelStyleAlt;
     public static ScrollPane.ScrollPaneStyle scrollStyle;
     public static void init() {
@@ -29,6 +30,10 @@ public class UITools {
         labelStyle = new Label.LabelStyle();
         labelStyle.font = renderFont("font/Pixellari.ttf", 20);
         labelStyle.fontColor = Color.BLACK;
+
+        labelStyleSmall = new Label.LabelStyle();
+        labelStyleSmall.font = renderFont("font/Pixellari.ttf", 18);
+        labelStyleSmall.fontColor = Color.BLACK;
 
         labelStyleAlt = new Label.LabelStyle();
         labelStyleAlt.font = renderFont("font/Pixellari.ttf", 20);

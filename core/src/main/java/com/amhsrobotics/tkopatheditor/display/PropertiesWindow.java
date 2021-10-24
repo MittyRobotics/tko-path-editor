@@ -10,10 +10,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+
+import java.text.DecimalFormat;
 
 public class PropertiesWindow {
 
@@ -21,12 +22,12 @@ public class PropertiesWindow {
     private Table window;
     private ScrollPane scroll;
 
-    private SplineHandle currentHandle;
-
-    // PROPERTIES
-    private Label name;
-
     private boolean isWindowOpen = false;
+
+    private SplineHandle currentHandle;
+    private Waypoint currentWaypoint;
+
+    private DecimalFormat format = new DecimalFormat("##.00");
 
     public static PropertiesWindow getInstance() {
         if(instance == null) {
@@ -74,6 +75,8 @@ public class PropertiesWindow {
 
         HandleProperties.getInstance().setName(handle.getSpline().getType().toString().replace("_", " ") + " " + handle.getSpline().getID());
         HandleProperties.getInstance().setSubName("Point " + handle.getId());
+        HandleProperties.getInstance().addLabel(format.format(handle.getPoint().getX()) + ", " + format.format(handle.getPoint().getY()));
+        HandleProperties.getInstance().addLabel(format.format(Math.toDegrees(handle.getPoint().getRotation().getRadians())));
         HandleProperties.getInstance().addButton("Delete Spline", () -> {
             SplineManager.getInstance().deleteSpline(handle.getSpline());
             DragConstants.resetAll();
@@ -81,6 +84,7 @@ public class PropertiesWindow {
     }
 
     public void setTarget(Waypoint waypoint) {
+        currentWaypoint = waypoint;
         HandleProperties.getInstance().reset();
 
         HandleProperties.getInstance().setName("Waypoint " + waypoint.getId());
@@ -102,10 +106,11 @@ public class PropertiesWindow {
 
     public void closeProperties() {
         isWindowOpen = false;
+        currentWaypoint = null;
+        currentHandle = null;
         UITools.slideOut(window, "bottom", 0.5f, Interpolation.exp5, 300, () -> {
             window.remove();
             resetPosition();
         });
     }
-
 }

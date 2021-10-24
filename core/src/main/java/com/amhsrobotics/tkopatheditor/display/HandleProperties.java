@@ -36,6 +36,12 @@ public class HandleProperties {
         table.add(subName);
     }
 
+    public void addLabel(String l) {
+        Label la = new Label(l, UITools.labelStyleSmall);
+        this.table.row().pad(10);
+        this.table.add(la);
+    }
+
     public void addButton(String b1, Runnable toRun) {
         TextButton btn = new TextButton(b1, UITools.textButtonStyle);
         btn.addListener(new ChangeListener() {

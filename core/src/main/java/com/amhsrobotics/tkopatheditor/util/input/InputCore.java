@@ -169,6 +169,7 @@ public class InputCore implements InputProcessor {
             if(w.isHovered() && Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
                 DragConstants.resetAll();
                 DragConstants.waypointSelected = w;
+                PropertiesWindow.getInstance().setTarget(w);
             }
         }
 
@@ -179,6 +180,7 @@ public class InputCore implements InputProcessor {
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 
         if(DragConstants.draggingHandle) {
+//            PropertiesWindow.getInstance().setTarget(DragConstants.handleSelected);
             DragConstants.draggingHandle = false;
             DragConstants.handleDragged = null;
         }

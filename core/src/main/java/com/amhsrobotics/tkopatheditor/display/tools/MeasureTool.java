@@ -5,6 +5,8 @@ import com.amhsrobotics.tkopatheditor.blueprints.ToolButton;
 import com.amhsrobotics.tkopatheditor.field.FieldConstants;
 import com.amhsrobotics.tkopatheditor.field.Waypoint;
 import com.amhsrobotics.tkopatheditor.field.WaypointManager;
+import com.amhsrobotics.tkopatheditor.parametrics.SplineHandle;
+import com.amhsrobotics.tkopatheditor.parametrics.SplineManager;
 import com.amhsrobotics.tkopatheditor.util.CameraManager;
 import com.amhsrobotics.tkopatheditor.util.DragConstants;
 import com.amhsrobotics.tkopatheditor.util.SnapGrid;
@@ -89,9 +91,17 @@ public class MeasureTool implements ToolButton {
         mouseCursor = CameraManager.mouseScreenToWorld();
         if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
             mouseCursor = SnapGrid.calculateSnap(mouseCursor);
+            for(SplineHandle hl : SplineManager.getInstance().getAllHandles()) {
+                Vector2 v = new Vector2((float) hl.getPoint().getX(), (float) hl.getPoint().getY());
+                if(v.dst(mouseCursor) <= 20) {
+                    mouseCursor.set(v);
+                    break;
+                }
+            }
             for(Waypoint wp : WaypointManager.getInstance().getWaypoints()) {
                 if(wp.getPositionPixels().dst(mouseCursor) <= 20) {
                     mouseCursor.set(wp.getPositionPixels());
+                    break;
                 }
             }
         }
