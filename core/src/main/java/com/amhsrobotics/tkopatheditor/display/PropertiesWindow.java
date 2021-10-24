@@ -27,8 +27,6 @@ public class PropertiesWindow {
     private SplineHandle currentHandle;
     private Waypoint currentWaypoint;
 
-    private DecimalFormat format = new DecimalFormat("##.00");
-
     public static PropertiesWindow getInstance() {
         if(instance == null) {
             instance = new PropertiesWindow();
@@ -75,8 +73,8 @@ public class PropertiesWindow {
 
         HandleProperties.getInstance().setName(handle.getSpline().getType().toString().replace("_", " ") + " " + handle.getSpline().getID());
         HandleProperties.getInstance().setSubName("Point " + handle.getId());
-        HandleProperties.getInstance().addLabel(format.format(handle.getPoint().getX()) + ", " + format.format(handle.getPoint().getY()));
-        HandleProperties.getInstance().addLabel(format.format(Math.toDegrees(handle.getPoint().getRotation().getRadians())));
+        HandleProperties.getInstance().addPositionRotation();
+        HandleProperties.getInstance().trackTargetPosition(handle);
         HandleProperties.getInstance().addButton("Delete Spline", () -> {
             SplineManager.getInstance().deleteSpline(handle.getSpline());
             DragConstants.resetAll();
@@ -112,5 +110,13 @@ public class PropertiesWindow {
             window.remove();
             resetPosition();
         });
+    }
+
+    public SplineHandle getCurrentHandle() {
+        return currentHandle;
+    }
+
+    public Waypoint getCurrentWaypoint() {
+        return currentWaypoint;
     }
 }

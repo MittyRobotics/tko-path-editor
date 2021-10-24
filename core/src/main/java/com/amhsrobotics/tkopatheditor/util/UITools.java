@@ -10,10 +10,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextTooltip;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
@@ -25,6 +22,8 @@ public class UITools {
     public static Label.LabelStyle labelStyleSmall;
     public static Label.LabelStyle labelStyleAlt;
     public static ScrollPane.ScrollPaneStyle scrollStyle;
+    public static TextField.TextFieldStyle textFieldStyle;
+
     public static void init() {
 
         labelStyle = new Label.LabelStyle();
@@ -38,6 +37,12 @@ public class UITools {
         labelStyleAlt = new Label.LabelStyle();
         labelStyleAlt.font = renderFont("font/Pixellari.ttf", 20);
         labelStyleAlt.fontColor = Color.SALMON;
+
+        textFieldStyle = new TextField.TextFieldStyle();
+        textFieldStyle.font = renderFont("font/Pixellari.ttf", 18);
+        textFieldStyle.fontColor = Color.BLACK;
+        textFieldStyle.background = Overlay.getInstance().getSkin().getDrawable("textbox_02");
+        textFieldStyle.cursor = Overlay.getInstance().getSkin().getDrawable("textbox_cursor_02");
 
         textButtonStyle = new TextButton.TextButtonStyle();
         textButtonStyle.font = labelStyle.font = renderFont("font/Pixellari.ttf", 20);

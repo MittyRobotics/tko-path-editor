@@ -1,6 +1,7 @@
 package com.amhsrobotics.tkopatheditor.util.input;
 
 import com.amhsrobotics.tkopatheditor.Constants;
+import com.amhsrobotics.tkopatheditor.display.HandleProperties;
 import com.amhsrobotics.tkopatheditor.display.PropertiesWindow;
 import com.amhsrobotics.tkopatheditor.display.tools.CubicSplineTool;
 import com.amhsrobotics.tkopatheditor.display.tools.MeasureTool;
@@ -180,7 +181,6 @@ public class InputCore implements InputProcessor {
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 
         if(DragConstants.draggingHandle) {
-//            PropertiesWindow.getInstance().setTarget(DragConstants.handleSelected);
             DragConstants.draggingHandle = false;
             DragConstants.handleDragged = null;
         }
@@ -210,6 +210,7 @@ public class InputCore implements InputProcessor {
                     DragConstants.handleDragged.setPosition(mousePosition);
                 }
             }
+            if(DragConstants.handleSelected != null) HandleProperties.getInstance().trackTargetPosition(DragConstants.handleSelected);
         } else if(DragConstants.draggingRotationHandle && DragConstants.handleSelected != null) {
 
             Vector2 mousePosition = CameraManager.mouseScreenToWorld();
@@ -227,6 +228,7 @@ public class InputCore implements InputProcessor {
             }
 
             DragConstants.handleSelected.setRotation(Math.toDegrees(angle));
+            if(DragConstants.handleSelected != null) HandleProperties.getInstance().trackTargetPosition(DragConstants.handleSelected);
         } else {
             if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
                 float x = Gdx.input.getDeltaX() * CameraManager.getInstance().getWorldCamera().getCamera().zoom;
