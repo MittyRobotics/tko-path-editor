@@ -23,6 +23,8 @@ public class UITools {
     public static Label.LabelStyle labelStyleAlt;
     public static ScrollPane.ScrollPaneStyle scrollStyle;
     public static TextField.TextFieldStyle textFieldStyle;
+    public static Window.WindowStyle windowStyle;
+    public static Slider.SliderStyle sliderStyle;
 
     public static void init() {
 
@@ -43,6 +45,13 @@ public class UITools {
         textFieldStyle.fontColor = Color.BLACK;
         textFieldStyle.background = Overlay.getInstance().getSkin().getDrawable("textbox_02");
         textFieldStyle.cursor = Overlay.getInstance().getSkin().getDrawable("textbox_cursor_02");
+
+        windowStyle = new Window.WindowStyle();
+        windowStyle.background = Overlay.getInstance().getSkinAlt().getDrawable("window_02");
+        windowStyle.titleFont = renderFont("font/Pixellari.ttf", 25);
+        windowStyle.titleFontColor = Color.WHITE;
+
+        sliderStyle = new Slider.SliderStyle();
 
         textButtonStyle = new TextButton.TextButtonStyle();
         textButtonStyle.font = labelStyle.font = renderFont("font/Pixellari.ttf", 20);
