@@ -37,7 +37,7 @@ public class CameraManager {
 
         getWorldCamera().getCamera().zoom = 1.0f;
         getWorldCamera().getCamera().position.set(new Vector2(WORLD_DIMENSIONS.x / 2, WORLD_DIMENSIONS.y / 2), 0);
-        getWorldCamera().smoothZoomTo(2.0f, 1.5f, Interpolation.exp5);
+        getWorldCamera().smoothZoomTo(2.0f, 0.9f, Interpolation.exp5);
     }
 
     public void update() {

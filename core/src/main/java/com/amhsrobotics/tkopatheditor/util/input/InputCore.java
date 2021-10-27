@@ -3,10 +3,7 @@ package com.amhsrobotics.tkopatheditor.util.input;
 import com.amhsrobotics.tkopatheditor.Constants;
 import com.amhsrobotics.tkopatheditor.display.HandleProperties;
 import com.amhsrobotics.tkopatheditor.display.PropertiesWindow;
-import com.amhsrobotics.tkopatheditor.display.tools.CubicSplineTool;
-import com.amhsrobotics.tkopatheditor.display.tools.MeasureTool;
-import com.amhsrobotics.tkopatheditor.display.tools.QuinticSplineTool;
-import com.amhsrobotics.tkopatheditor.display.tools.WaypointTool;
+import com.amhsrobotics.tkopatheditor.display.tools.*;
 import com.amhsrobotics.tkopatheditor.field.Waypoint;
 import com.amhsrobotics.tkopatheditor.field.WaypointManager;
 import com.amhsrobotics.tkopatheditor.parametrics.SplineHandle;
@@ -90,6 +87,9 @@ public class InputCore implements InputProcessor {
 
         if(keycode == Input.Keys.ESCAPE) {
             DragConstants.resetAll();
+            ExportTool.getInstance().close();
+            SettingsTool.getInstance().close();
+            HelpTool.getInstance().close();
         }
 
         return false;

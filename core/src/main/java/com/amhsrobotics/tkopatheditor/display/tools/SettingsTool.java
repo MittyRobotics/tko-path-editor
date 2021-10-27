@@ -6,10 +6,7 @@ import com.amhsrobotics.tkopatheditor.util.UITools;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.Slider;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextTooltip;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 public class SettingsTool implements ToolButton {
@@ -49,10 +46,15 @@ public class SettingsTool implements ToolButton {
         window.setKeepWithinStage(false);
         window.setMovable(false);
         window.setPosition(((float) Gdx.graphics.getWidth() / 2) - 250, -450);
+
+        Table container = new Table();
+        Slider slider = new Slider(1, 100, 1, false, UITools.sliderStyle);
+        container.row();
+        container.add(slider);
+
+        window.add(container);
+
         Overlay.getInstance().getStage().addActor(window);
-
-        Slider slider = new Slider(0, 10, 1, false, UITools.sliderStyle);
-
         return button;
     }
 

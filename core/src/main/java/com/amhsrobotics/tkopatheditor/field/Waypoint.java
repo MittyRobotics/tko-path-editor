@@ -1,6 +1,7 @@
 package com.amhsrobotics.tkopatheditor.field;
 
 import com.amhsrobotics.tkopatheditor.Constants;
+import com.amhsrobotics.tkopatheditor.display.HandleProperties;
 import com.amhsrobotics.tkopatheditor.util.CameraManager;
 import com.amhsrobotics.tkopatheditor.util.DragConstants;
 import com.badlogic.gdx.Gdx;
@@ -50,9 +51,6 @@ public class Waypoint {
 
 
     public void render(ShapeRenderer renderer, SpriteBatch batch, BitmapFont font) {
-
-//        batch.setProjectionMatrix(CameraManager.getInstance().getWorldCamera().getCamera().combined);
-//        renderer.setProjectionMatrix(CameraManager.getInstance().getWorldCamera().getCamera().combined);
 
         renderer.begin(ShapeRenderer.ShapeType.Filled);
 
@@ -107,13 +105,24 @@ public class Waypoint {
     public void setAsZero() {
         FieldConstants.zero.set(position);
         WaypointManager.getInstance().regenerateAllWaypoints();
+        if(DragConstants.waypointSelected != null) HandleProperties.getInstance().setPositionText(0, 0);
     }
 
     public Vector2 getPositionPixels() {
         return position;
     }
 
+    public Vector2 getPositionInches() {
+        return positionInches;
+    }
+
     public int getId() {
         return id;
+    }
+
+    public void setPosition(Vector2 position) {
+        this.position = position;
+        marker.setOriginBasedPosition(this.position.x, this.position.y);
+        regenerateInchPosition();
     }
 }

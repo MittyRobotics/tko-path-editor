@@ -14,12 +14,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
-import java.text.DecimalFormat;
-
 public class PropertiesWindow {
 
     private static PropertiesWindow instance;
     private Table window;
+    private Table inner;
     private ScrollPane scroll;
 
     private boolean isWindowOpen = false;
@@ -36,11 +35,12 @@ public class PropertiesWindow {
 
     public void init() {
         window = new Table();
+        inner = new Table();
         window.setBackground(Overlay.getInstance().getSkinAlt().getDrawable("textbox_01"));
         window.setWidth(300);
         window.setHeight(250);
 
-        scroll = new ScrollPane(window, UITools.scrollStyle);
+        scroll = new ScrollPane(inner, UITools.scrollStyle);
         scroll.setScrollingDisabled(true, false);
         scroll.addListener(new ClickListener() {
             @Override
@@ -53,8 +53,9 @@ public class PropertiesWindow {
                 Overlay.getInstance().getStage().setScrollFocus(null);
             }
         });
+        window.add(scroll).pad(10);
 
-        HandleProperties.getInstance().init(window);
+        HandleProperties.getInstance().init(inner);
 
         resetPosition();
     }
@@ -73,12 +74,22 @@ public class PropertiesWindow {
 
         HandleProperties.getInstance().setName(handle.getSpline().getType().toString().replace("_", " ") + " " + handle.getSpline().getID());
         HandleProperties.getInstance().setSubName("Point " + handle.getId());
-        HandleProperties.getInstance().addPositionRotation();
+        HandleProperties.getInstance().addPositionRotation(true);
         HandleProperties.getInstance().trackTargetPosition(handle);
-        HandleProperties.getInstance().addButton("Delete Spline", () -> {
-            SplineManager.getInstance().deleteSpline(handle.getSpline());
-            DragConstants.resetAll();
-        });
+        HandleProperties.getInstance().row(10);
+        HandleProperties.getInstance().addButtonRow(
+                new String[] {"Delete Spline", "Color"},
+                new Runnable[] {
+                        () -> {
+                            SplineManager.getInstance().deleteSpline(handle.getSpline());
+                            DragConstants.resetAll();
+                        },
+                        () -> {
+
+                        }
+                },
+                5
+        );
     }
 
     public void setTarget(Waypoint waypoint) {
@@ -86,13 +97,24 @@ public class PropertiesWindow {
         HandleProperties.getInstance().reset();
 
         HandleProperties.getInstance().setName("Waypoint " + waypoint.getId());
+        HandleProperties.getInstance().addPositionRotation(false);
+        HandleProperties.getInstance().trackTargetPosition(waypoint);
+        HandleProperties.getInstance().row(10);
         HandleProperties.getInstance().addButton("Delete Waypoint", () -> {
             WaypointManager.getInstance().deleteWaypoint(waypoint);
             DragConstants.resetAll();
         });
-        HandleProperties.getInstance().addButton("Set Zero", () -> {
-            waypoint.setAsZero();
-        });
+        HandleProperties.getInstance().row();
+        HandleProperties.getInstance().addButtonRow(
+                new String[] {"Set Zero", "Color"},
+                new Runnable[] {
+                        waypoint::setAsZero,
+                        () -> {
+
+                        }
+                },
+                5
+        );
     }
 
     public void showProperties() {

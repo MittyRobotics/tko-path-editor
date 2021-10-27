@@ -52,6 +52,8 @@ public class UITools {
         windowStyle.titleFontColor = Color.WHITE;
 
         sliderStyle = new Slider.SliderStyle();
+        sliderStyle.knob = Overlay.getInstance().getSkin().getDrawable("knob_05");
+        sliderStyle.background = Overlay.getInstance().getSkin().getDrawable("slider_back_hor");
 
         textButtonStyle = new TextButton.TextButtonStyle();
         textButtonStyle.font = labelStyle.font = renderFont("font/Pixellari.ttf", 20);
