@@ -1,6 +1,7 @@
 package com.amhsrobotics.tkopatheditor.display.tools;
 
 import com.amhsrobotics.tkopatheditor.blueprints.ToolButton;
+import com.amhsrobotics.tkopatheditor.display.ColorWindow;
 import com.amhsrobotics.tkopatheditor.display.Overlay;
 import com.amhsrobotics.tkopatheditor.util.UITools;
 import com.badlogic.gdx.Gdx;

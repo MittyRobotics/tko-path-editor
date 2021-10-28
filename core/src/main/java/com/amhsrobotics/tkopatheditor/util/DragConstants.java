@@ -1,5 +1,6 @@
 package com.amhsrobotics.tkopatheditor.util;
 
+import com.amhsrobotics.tkopatheditor.display.PropertiesWindow;
 import com.amhsrobotics.tkopatheditor.field.Waypoint;
 import com.amhsrobotics.tkopatheditor.parametrics.SplineHandle;
 import com.amhsrobotics.tkopatheditor.parametrics.SplineWrapper;

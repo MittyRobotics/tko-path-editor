@@ -1,6 +1,7 @@
 package com.amhsrobotics.tkopatheditor.util.input;
 
 import com.amhsrobotics.tkopatheditor.Constants;
+import com.amhsrobotics.tkopatheditor.display.ColorWindow;
 import com.amhsrobotics.tkopatheditor.display.HandleProperties;
 import com.amhsrobotics.tkopatheditor.display.PropertiesWindow;
 import com.amhsrobotics.tkopatheditor.display.tools.*;
@@ -18,6 +19,8 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.IntSet;
+
+import java.awt.*;
 
 import static com.github.mittyrobotics.core.math.units.ConversionsKt.degrees;
 
@@ -90,6 +93,7 @@ public class InputCore implements InputProcessor {
             ExportTool.getInstance().close();
             SettingsTool.getInstance().close();
             HelpTool.getInstance().close();
+            ColorWindow.getInstance().close();
         }
 
         return false;
@@ -162,7 +166,10 @@ public class InputCore implements InputProcessor {
                 }
             }
             if(nonePressed) {
-                DragConstants.resetAll();
+                if(!ColorWindow.getInstance().isHovered()) {
+                    DragConstants.resetAll();
+                    ColorWindow.getInstance().close();
+                }
             }
         }
 
@@ -231,13 +238,15 @@ public class InputCore implements InputProcessor {
             if(DragConstants.handleSelected != null) HandleProperties.getInstance().trackTargetPosition(DragConstants.handleSelected);
         } else {
             if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-                float x = Gdx.input.getDeltaX() * CameraManager.getInstance().getWorldCamera().getCamera().zoom;
-                float y = Gdx.input.getDeltaY() * CameraManager.getInstance().getWorldCamera().getCamera().zoom;
+                if(!ColorWindow.getInstance().isHovered()) {
+                    float x = Gdx.input.getDeltaX() * CameraManager.getInstance().getWorldCamera().getCamera().zoom;
+                    float y = Gdx.input.getDeltaY() * CameraManager.getInstance().getWorldCamera().getCamera().zoom;
 
-                if(CameraManager.getInstance().getWorldCamera().getCamera().zoom > 1.0) {
-                    CameraManager.getInstance().getWorldCamera().getCamera().translate(-x * Constants.PAN_AMPLIFIER * 2, y * Constants.PAN_AMPLIFIER * 2);
-                } else if(CameraManager.getInstance().getWorldCamera().getCamera().zoom > 0) {
-                    CameraManager.getInstance().getWorldCamera().getCamera().translate(-x * Constants.PAN_AMPLIFIER, y * Constants.PAN_AMPLIFIER);
+                    if(CameraManager.getInstance().getWorldCamera().getCamera().zoom > 1.0) {
+                        CameraManager.getInstance().getWorldCamera().getCamera().translate(-x * Constants.PAN_AMPLIFIER * 2, y * Constants.PAN_AMPLIFIER * 2);
+                    } else if(CameraManager.getInstance().getWorldCamera().getCamera().zoom > 0) {
+                        CameraManager.getInstance().getWorldCamera().getCamera().translate(-x * Constants.PAN_AMPLIFIER, y * Constants.PAN_AMPLIFIER);
+                    }
                 }
             }
         }

@@ -58,7 +58,8 @@ public class Overlay implements Disposable {
                 WaypointTool.getInstance().create(),
                 ExportTool.getInstance().create(),
                 SettingsTool.getInstance().create(),
-                HelpTool.getInstance().create()
+                HelpTool.getInstance().create(),
+                ColorWindow.getInstance().create()
         );
     }
 
@@ -116,5 +117,6 @@ public class Overlay implements Disposable {
         overlayBatch.dispose();
         overlayShape.dispose();
         fieldFont.dispose();
+        ColorWindow.getInstance().dispose();
     }
 }

@@ -1,6 +1,7 @@
 package com.amhsrobotics.tkopatheditor.parametrics;
 
 import com.amhsrobotics.tkopatheditor.Constants;
+import com.amhsrobotics.tkopatheditor.display.PropertiesWindow;
 import com.amhsrobotics.tkopatheditor.util.CameraManager;
 import com.amhsrobotics.tkopatheditor.util.DragConstants;
 import com.amhsrobotics.tkopatheditor.util.Tuple;
@@ -8,6 +9,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.github.mittyrobotics.core.math.geometry.Rotation;
@@ -47,6 +49,8 @@ public class SplineWrapper {
 
         ID = id_count;
         id_count++;
+
+        CameraManager.getInstance().getWorldCamera().smoothZoomTo(0.6f, 0.5f, Interpolation.exp5);
     }
 
     public SplineWrapper(SplineType type) {
@@ -151,7 +155,10 @@ public class SplineWrapper {
 
         DragConstants.handleSelected = null;
         DragConstants.handleDragged = null;
+    }
 
+    public void setColor(Color c) {
+        this.color = c;
     }
 
     public DelayedRemovalArray<SplineHandle> getHandles() {

@@ -24,6 +24,7 @@ public class UITools {
     public static ScrollPane.ScrollPaneStyle scrollStyle;
     public static TextField.TextFieldStyle textFieldStyle;
     public static Window.WindowStyle windowStyle;
+    public static Window.WindowStyle windowStyleAlt;
     public static Slider.SliderStyle sliderStyle;
 
     public static void init() {
@@ -50,6 +51,11 @@ public class UITools {
         windowStyle.background = Overlay.getInstance().getSkinAlt().getDrawable("window_02");
         windowStyle.titleFont = renderFont("font/Pixellari.ttf", 25);
         windowStyle.titleFontColor = Color.WHITE;
+
+        windowStyleAlt = new Window.WindowStyle();
+        windowStyleAlt.background = Overlay.getInstance().getSkinAlt().getDrawable("textbox_01");
+        windowStyleAlt.titleFont = renderFont("font/Pixellari.ttf", 25);
+        windowStyleAlt.titleFontColor = Color.BLACK;
 
         sliderStyle = new Slider.SliderStyle();
         sliderStyle.knob = Overlay.getInstance().getSkin().getDrawable("knob_05");

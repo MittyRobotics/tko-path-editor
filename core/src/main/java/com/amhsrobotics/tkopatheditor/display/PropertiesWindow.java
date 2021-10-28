@@ -85,7 +85,7 @@ public class PropertiesWindow {
                             DragConstants.resetAll();
                         },
                         () -> {
-
+                            ColorWindow.getInstance().toggle();
                         }
                 },
                 5
@@ -110,7 +110,7 @@ public class PropertiesWindow {
                 new Runnable[] {
                         waypoint::setAsZero,
                         () -> {
-
+                            ColorWindow.getInstance().toggle();
                         }
                 },
                 5
