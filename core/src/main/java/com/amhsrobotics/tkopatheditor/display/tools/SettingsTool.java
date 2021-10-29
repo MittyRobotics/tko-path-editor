@@ -48,7 +48,17 @@ public class SettingsTool implements ToolButton {
         window.setPosition(((float) Gdx.graphics.getWidth() / 2) - 250, -450);
 
         Table container = new Table();
+
+        Label title = new Label("Mouse Sensitivity", UITools.labelStyle);
+        container.row();
+        container.add(title);
         Slider slider = new Slider(1, 100, 1, false, UITools.sliderStyle);
+        slider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                ((Slider) actor).getX();
+            }
+        });
         container.row();
         container.add(slider);
 
