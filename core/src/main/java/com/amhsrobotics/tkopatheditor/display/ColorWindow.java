@@ -6,6 +6,7 @@ import com.amhsrobotics.tkopatheditor.util.DragConstants;
 import com.amhsrobotics.tkopatheditor.util.UITools;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Interpolation;
@@ -56,6 +57,7 @@ public class ColorWindow implements Disposable {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 hovered = true;
+                Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Crosshair);
 
                 Vector2 localCoords = colorwheel.screenToLocalCoordinates(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
                 int localX = (int) localCoords.x;
@@ -71,11 +73,13 @@ public class ColorWindow implements Disposable {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 hovered = true;
+                Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Crosshair);
             }
 
             @Override
             public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
                 hovered = false;
+                Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
             }
         });
 
