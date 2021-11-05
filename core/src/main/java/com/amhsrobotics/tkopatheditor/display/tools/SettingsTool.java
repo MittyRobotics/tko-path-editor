@@ -1,5 +1,6 @@
 package com.amhsrobotics.tkopatheditor.display.tools;
 
+import com.amhsrobotics.tkopatheditor.Constants;
 import com.amhsrobotics.tkopatheditor.blueprints.ToolButton;
 import com.amhsrobotics.tkopatheditor.display.Overlay;
 import com.amhsrobotics.tkopatheditor.util.UITools;
@@ -49,14 +50,14 @@ public class SettingsTool implements ToolButton {
 
         Table container = new Table();
 
-        Label title = new Label("Mouse Sensitivity", UITools.labelStyle);
+        Label title = new Label("Map Pan Sensitivity", UITools.labelStyle);
         container.row();
         container.add(title);
         Slider slider = new Slider(1, 100, 1, false, UITools.sliderStyle);
         slider.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                ((Slider) actor).getX();
+                Constants.PAN_AMPLIFIER = (float) (10.0 * (((Slider) actor).getValue() / 100));
             }
         });
         container.row();
