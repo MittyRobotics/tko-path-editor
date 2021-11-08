@@ -54,6 +54,7 @@ public class SettingsTool implements ToolButton {
         container.row();
         container.add(title);
         Slider slider = new Slider(1, 100, 1, false, UITools.sliderStyle);
+        slider.setValue(Constants.PAN_AMPLIFIER * 10f);
         slider.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -64,6 +65,8 @@ public class SettingsTool implements ToolButton {
         container.add(slider);
 
         window.add(container);
+
+
 
         Overlay.getInstance().getStage().addActor(window);
         return button;
